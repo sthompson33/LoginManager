@@ -1,9 +1,9 @@
-package application;
-
 /**
  * @author Stephen
  *
  */
+
+package application;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

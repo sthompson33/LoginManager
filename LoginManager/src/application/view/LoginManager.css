@@ -1,9 +1,14 @@
+/*
+---- section used for mainLogin.fxml ----
+*/
+
+
 .label{
 	-fx-border-color: #ffffff;
 	-fx-border-width: 0 0 2px 0;
 }
 
-.jfx-text-field{
+.jfx-text-field-ML{
 	-fx-prompt-text-fill: #c0c0c0;
 	-fx-text-inner-color: #ffffff;
 }
@@ -12,8 +17,7 @@
 /*
 text-area code
 -change background and prompt text color
--background-radius used to hide corner dots left over after setEditable(false)  used in controller  
--
+-background-radius used to hide corner dots left over after setEditable(false)used in controller
 */
 
 .text-area {
@@ -34,3 +38,18 @@ text-area code
 .text-area *.text{
 	-fx-text-alignment: justify;
 }
+
+
+
+
+
+/*
+---- section used for menuOption.fxml ----
+*/
+
+
+.jfx-text-field-MO{
+	-fx-prompt-text-fill: #c0c0c0;
+	-fx-text-inner-color: #336699;
+}
+

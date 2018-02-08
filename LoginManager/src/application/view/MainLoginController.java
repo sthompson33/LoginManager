@@ -1,4 +1,10 @@
+/**
+ * 
+ */
+
 package application.view;
+
+import java.io.IOException;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -6,100 +12,48 @@ import com.jfoenix.controls.JFXTextField;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class MainLoginController {
 
-    @FXML
-    private AnchorPane rootAnchor;
+	  	@FXML
+	    private AnchorPane rootAnchor;
 
-    @FXML
-    private AnchorPane displayAnchor;
+	  	@FXML
+	    private Pane signUpPane, signInPane, forgotPane;
 
-    @FXML
-    private ImageView displayImage;
+	    @FXML
+	    private Button select_SignIn, select_SignUp, forgotButton;
 
-    @FXML
-    private AnchorPane signUpAnchor;
+	    @FXML
+	    private JFXTextField usernameField, usernameField2, emailField, retrieveField;
 
-    @FXML
-    private Button select_SignIn;
+	    @FXML
+	    private JFXPasswordField passwordField, passwordField2;
 
-    @FXML
-    private JFXTextField usernameField2;
+	    @FXML
+	    private TextArea textArea;
+	    
+	    @FXML
+	    private JFXButton signUpButton, signInButton, retrieveButton, exitButton, backButton;
 
-    @FXML
-    private ImageView userIcon2;
+	    @FXML
+	    private ImageView displayImage, userIcon, userIcon2, userIcon3, lockIcon, lockIcon2, emailIcon;
 
-    @FXML
-    private JFXPasswordField passwordField2;
+	    
 
-    @FXML
-    private ImageView lockIcon2;
-
-    @FXML
-    private JFXTextField emailField;
-
-    @FXML
-    private ImageView emailIcon;
-
-    @FXML
-    private JFXButton signUpButton;
-
-    @FXML
-    private AnchorPane forgotAnchor;
-
-    @FXML
-    private Button backButton;
-
-    @FXML
-    private JFXTextField retrieveField;
-
-    @FXML
-    private ImageView userIcon3;
-
-    @FXML
-    private JFXButton retrieveButton;
-
-    @FXML
-    private AnchorPane signInAnchor;
-
-    @FXML
-    private Button select_SignUp;
-
-    @FXML
-    private JFXTextField usernameField;
-
-    @FXML
-    private ImageView userIcon;
-
-    @FXML
-    private JFXPasswordField passwordField;
-
-    @FXML
-    private ImageView lockIcon;
-
-    @FXML
-    private Button forgotButton;
-
-    @FXML
-    private JFXButton signInButton;
-
-    @FXML
-    private JFXButton exitButton;
-    
-    @FXML
-    private TextArea textArea;
-
-    private ImageView backArrow = new ImageView("/images/backArrow.png");
-    
-    public void initialize(){
+	public void initialize(){
     	
-    	backButton.setGraphic(backArrow);
-    	signInAnchor.toFront();
+		signInPane.toFront();
     	
     	textArea.setEditable(false);
     	textArea.setFocusTraversable(false);
@@ -111,22 +65,50 @@ public class MainLoginController {
      */
     
     @FXML
-    void switchPaneListener(ActionEvent event) {
+    public void switchPaneListener(ActionEvent event) {
     	
     	if(event.getSource() == select_SignUp)
-    		signUpAnchor.toFront();
+    		signUpPane.toFront();
     	
     	if(event.getSource() == select_SignIn)
-    		signInAnchor.toFront();
+    		signInPane.toFront();
     	
     	if(event.getSource() == forgotButton)
-    		forgotAnchor.toFront();
+    		forgotPane.toFront();
     	
     	if(event.getSource() == backButton)
-    		signInAnchor.toFront();
+    		signInPane.toFront();
     	
     	if(event.getSource() == exitButton)
     		System.exit(0);
+    }
+    
+    /**
+     * 
+     */
+    
+    @FXML
+    public void signInListener(ActionEvent event) throws IOException {
+    	
+    	//check correct info here, then call switchScene()
+    	switchScene(event);
+    }
+
+    @FXML
+    public void signUpListener(ActionEvent event) throws IOException {
+    	
+    	//check correct info here, then call switchScene()
+    	switchScene(event);
+
+    }
+    
+    private void switchScene(ActionEvent event) throws IOException{
+    	
+    		AnchorPane root = FXMLLoader.load(getClass().getResource("MenuOption.fxml"));
+			Scene menuScene = new Scene(root);
+			Stage menuStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+			menuStage.setScene(menuScene);
+			menuStage.show();
     }
 
  }
