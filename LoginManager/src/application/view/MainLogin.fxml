@@ -57,7 +57,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="usernameField2" focusColor="WHITE" labelFloat="true" layoutX="45.0" layoutY="140.0" prefHeight="30.0" prefWidth="260.0" promptText="Username" styleClass="jfx-text-field-ML" stylesheets="@LoginManager.css" unFocusColor="SILVER">
+            <JFXTextField fx:id="signUpUsername" focusColor="WHITE" labelFloat="true" layoutX="45.0" layoutY="140.0" prefHeight="30.0" prefWidth="260.0" promptText="Username" styleClass="jfx-text-field-ML" stylesheets="@LoginManager.css" unFocusColor="SILVER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -67,7 +67,7 @@
                   <Image url="/images/gray_user.png" />
                </image>
             </ImageView>
-            <JFXPasswordField fx:id="passwordField2" focusColor="WHITE" labelFloat="true" layoutX="45.0" layoutY="202.0" prefHeight="30.0" prefWidth="260.0" promptText="Password" styleClass="jfx-text-field-ML" stylesheets="@LoginManager.css" unFocusColor="SILVER">
+            <JFXPasswordField fx:id="signUpPassword" focusColor="WHITE" labelFloat="true" layoutX="45.0" layoutY="202.0" prefHeight="30.0" prefWidth="260.0" promptText="Password" styleClass="jfx-text-field-ML" stylesheets="@LoginManager.css" unFocusColor="SILVER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -77,7 +77,7 @@
                   <Image url="/images/gray_lock.png" />
                </image>
             </ImageView>
-            <JFXTextField fx:id="emailField" focusColor="WHITE" labelFloat="true" layoutX="45.0" layoutY="264.0" prefHeight="30.0" prefWidth="260.0" promptText="Email" styleClass="jfx-text-field-ML" stylesheets="@LoginManager.css" unFocusColor="SILVER">
+            <JFXTextField fx:id="signUpEmail" focusColor="WHITE" labelFloat="true" layoutX="45.0" layoutY="264.0" prefHeight="30.0" prefWidth="260.0" promptText="Email" styleClass="jfx-text-field-ML" stylesheets="@LoginManager.css" unFocusColor="SILVER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -178,7 +178,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <JFXTextField fx:id="usernameField" focusColor="WHITE" labelFloat="true" layoutX="45.0" layoutY="140.0" prefHeight="30.0" prefWidth="260.0" promptText="Username" styleClass="jfx-text-field-ML" stylesheets="@LoginManager.css" unFocusColor="SILVER">
+            <JFXTextField fx:id="signInUsername" focusColor="WHITE" labelFloat="true" layoutX="45.0" layoutY="140.0" prefHeight="30.0" prefWidth="260.0" promptText="Username" styleClass="jfx-text-field-ML" stylesheets="@LoginManager.css" unFocusColor="SILVER">
                <font>
                   <Font size="14.0" />
                </font>
@@ -188,7 +188,7 @@
                   <Image url="/images/gray_user.png" />
                </image>
             </ImageView>
-            <JFXPasswordField fx:id="passwordField" focusColor="WHITE" labelFloat="true" layoutX="45.0" layoutY="202.0" prefHeight="30.0" prefWidth="260.0" promptText="Password" styleClass="jfx-text-field-ML" stylesheets="@LoginManager.css" unFocusColor="SILVER">
+            <JFXPasswordField fx:id="signInPassword" focusColor="WHITE" labelFloat="true" layoutX="45.0" layoutY="202.0" prefHeight="30.0" prefWidth="260.0" promptText="Password" styleClass="jfx-text-field-ML" stylesheets="@LoginManager.css" unFocusColor="SILVER">
                <font>
                   <Font size="14.0" />
                </font>

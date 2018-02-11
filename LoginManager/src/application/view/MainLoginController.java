@@ -20,36 +20,33 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainLoginController {
+	
+	@FXML
+	private AnchorPane rootAnchor;
 
-	  	@FXML
-	    private AnchorPane rootAnchor;
+	@FXML
+	private Pane signInPane, signUpPane, forgotPane;
 
-	  	@FXML
-	    private Pane signUpPane, signInPane, forgotPane;
+	@FXML
+	private Button select_SignIn, select_SignUp, forgotButton;
 
-	    @FXML
-	    private Button select_SignIn, select_SignUp, forgotButton;
+	@FXML
+	private JFXTextField signInUsername, signUpUsername, signUpEmail, retrieveField;
 
-	    @FXML
-	    private JFXTextField usernameField, usernameField2, emailField, retrieveField;
+	@FXML
+	private JFXPasswordField signInPassword, signUpPassword;
 
-	    @FXML
-	    private JFXPasswordField passwordField, passwordField2;
-
-	    @FXML
-	    private TextArea textArea;
+	@FXML
+	private TextArea textArea;
 	    
-	    @FXML
-	    private JFXButton signUpButton, signInButton, retrieveButton, exitButton, backButton;
+	@FXML
+	private JFXButton signUpButton, signInButton, retrieveButton, exitButton, backButton;
 
-	    @FXML
-	    private ImageView displayImage, userIcon, userIcon2, userIcon3, lockIcon, lockIcon2, emailIcon;
-
-	    
+	@FXML
+	private ImageView displayImage, userIcon, userIcon2, userIcon3, lockIcon, lockIcon2, emailIcon;
 
 	public void initialize(){
     	
@@ -85,10 +82,12 @@ public class MainLoginController {
     
     /**
      * 
+     * 
      */
     
     @FXML
     public void signInListener(ActionEvent event) throws IOException {
+    	
     	
     	//check correct info here, then call switchScene()
     	switchScene(event);
@@ -104,11 +103,11 @@ public class MainLoginController {
     
     private void switchScene(ActionEvent event) throws IOException{
     	
-    		AnchorPane root = FXMLLoader.load(getClass().getResource("MenuOption.fxml"));
-			Scene menuScene = new Scene(root);
-			Stage menuStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-			menuStage.setScene(menuScene);
-			menuStage.show();
+    	AnchorPane root = FXMLLoader.load(getClass().getResource("MenuOption.fxml"));
+		Scene menuScene = new Scene(root);
+		Stage menuStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		menuStage.setScene(menuScene);
+		menuStage.show();
     }
 
  }

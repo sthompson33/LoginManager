@@ -7,6 +7,7 @@ package application.view;
 import java.io.IOException;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
@@ -45,27 +46,34 @@ public class MenuOptionController {
     
     //JFXButtons on each corresponding pane
     @FXML 
-    private JFXButton addNewButton;
+    private JFXButton addNewButton, retrieveButton, updateButton, deleteButton;
 
     @FXML
-    private Label addNewLabel, retrieveLabel, updateLabel, deleteLabel;
+    private Label usernameResult, passwordResult;
 
     @FXML
-    private Pane displayPane, helpPane, addNewPane;
+    private Pane displayPane, helpPane, addNewPane, retrievePane, updatePane, deletePane;
 
     @FXML
-    private ImageView displayLock, arrow1, arrow2, arrow3, arrow4;
+    private ImageView userIconA, userIconU, lockIconA, lockIconU, webIconA, webIconD, webIconR, webIconU;
    
     @FXML
-    private JFXTextField websiteFieldA, usernameFieldA;
+    private JFXTextField addWebsiteField, addUsernameField, retrieveWebsiteField, updateWebsiteField, updateUsernameField, deleteWebsiteField;
     
     @FXML
-    private JFXPasswordField passwordFieldA;
+    private JFXPasswordField addPasswordField, updatePasswordField;
+    
+    @FXML
+    private JFXCheckBox usernameCheckBox, passwordCheckBox;
     
     public void initialize(){
-    	
+    
     	displayPane.toFront();
     }
+    
+    /**
+     * 
+     */
 
     public void toggleListener(){
     	
@@ -86,8 +94,42 @@ public class MenuOptionController {
     	if(event.getSource() == addNewMenuButton)
     		addNewPane.toFront();
     	
+    	if(event.getSource() == retrieveMenuButton)
+    		retrievePane.toFront();
+    	
+    	if(event.getSource() == updateMenuButton)
+    		updatePane.toFront();
+    	
+    	if(event.getSource() == deleteMenuButton)
+    		deletePane.toFront();
+    	
     	if(event.getSource() == exitMenuButton)
     		System.exit(0);
+    }
+    
+    /**
+     * 
+     */
+    
+    public void checkBoxListener(){
+    	
+    	if(usernameCheckBox.isSelected()){
+    		updateUsernameField.setVisible(true);
+    		userIconU.setVisible(true);
+    	}
+    	else{
+    		updateUsernameField.setVisible(false);
+    		userIconU.setVisible(false);
+    	}
+    	
+    	if(passwordCheckBox.isSelected()){
+    		updatePasswordField.setVisible(true);
+    		lockIconU.setVisible(true);
+    	}
+    	else{
+    		updatePasswordField.setVisible(false);
+    		lockIconU.setVisible(false);
+    	}
     }
     
     /**
