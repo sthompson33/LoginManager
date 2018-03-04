@@ -5,6 +5,9 @@
 package application.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
@@ -19,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -66,6 +70,8 @@ public class MenuOptionController {
     @FXML
     private JFXCheckBox usernameCheckBox, passwordCheckBox;
     
+    private ArrayList<TextField> textFieldList = new ArrayList<TextField>(3);
+    
     public void initialize(){
     
     	displayPane.toFront();
@@ -73,21 +79,11 @@ public class MenuOptionController {
     
     /**
      * 
-     */
-
-    public void toggleListener(){
-    	
-    	if(helpToggle.isSelected())
-    		helpPane.toFront();
-    	else
-    		displayPane.toFront();
-    }
-    
-    /**
      * 
      */
     
-    public void menuOptionListener(ActionEvent event){
+    @FXML
+    public void switchPaneListener(ActionEvent event){
     	
     	helpToggle.setSelected(false);
     	
@@ -109,8 +105,66 @@ public class MenuOptionController {
     
     /**
      * 
+     * 
      */
     
+    @FXML
+    public void addNewListener() {
+    	
+    	textFieldList.clear();
+    	textFieldList.add(addWebsiteField);
+    	textFieldList.add(addUsernameField);
+    	textFieldList.add(addPasswordField);
+    	
+    	if(!checkForEmptyInput(textFieldList)) {
+    		
+    		JOptionPane.showMessageDialog(null, "New information saved!");
+    	}
+    }
+    
+    /**
+     * 
+     * 
+     */
+    
+    @FXML
+    public void retrieveListener() {
+    	
+    	textFieldList.clear();
+    	textFieldList.add(retrieveWebsiteField);
+    	
+    	if(!checkForEmptyInput(textFieldList)) {
+    		JOptionPane.showMessageDialog(null, "Here is website login");
+    	}
+    }
+    
+    /**
+     * 
+     * 
+     */
+    
+    @FXML
+    public void updateListener() {
+    	
+    	textFieldList.clear();
+    	textFieldList.add(updateWebsiteField);
+    	
+    	if(usernameCheckBox.isSelected())
+    		textFieldList.add(updateUsernameField);
+    	
+    	if(passwordCheckBox.isSelected())
+    		textFieldList.add(updatePasswordField);
+    	
+    	if(!usernameCheckBox.isSelected() && !passwordCheckBox.isSelected())
+    		JOptionPane.showMessageDialog(null, "you must select username or password to update");
+    	else {
+    		if(!checkForEmptyInput(textFieldList)) {
+    			JOptionPane.showMessageDialog(null, "information updated");
+    		}
+    	}
+    }
+    
+    @FXML
     public void checkBoxListener(){
     	
     	if(usernameCheckBox.isSelected()){
@@ -134,8 +188,40 @@ public class MenuOptionController {
     
     /**
      * 
+     * 
      */
     
+    @FXML
+    public void deletListener() {
+    	
+    	textFieldList.clear();
+    	textFieldList.add(deleteWebsiteField);
+    	
+    	if(!checkForEmptyInput(textFieldList)) {
+    		JOptionPane.showMessageDialog(null, "information deleted");
+    	}
+    }
+    
+    /**
+     * 
+     * 
+     */
+
+    @FXML
+    public void toggleListener(){
+    	
+    	if(helpToggle.isSelected())
+    		helpPane.toFront();
+    	else
+    		displayPane.toFront();
+    }
+    
+    /**
+     * 
+     * 
+     */
+    
+    @FXML
     public void switchSceneListener(ActionEvent event) throws IOException{
     	
     	AnchorPane root = FXMLLoader.load(getClass().getResource("MainLogin.fxml"));
@@ -143,5 +229,30 @@ public class MenuOptionController {
 		Stage mainStage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		mainStage.setScene(mainScene);
 		mainStage.show();
+    }
+    
+    /**
+     * 
+     * 
+     */
+    
+    private boolean checkForEmptyInput(ArrayList<TextField> textfield) {
+    	
+    	boolean emptyInput = false;
+    	
+    	for(TextField tf : textfield) {
+    		
+    		if(tf.getText().isEmpty()) {
+    			
+    			tf.getStyleClass().add("jfx-text-field-error");
+    			emptyInput = true;
+    		}
+    		else {
+    			tf.getStyleClass().clear();
+    			tf.getStyleClass().addAll("text-field", "text-input", "jfx-text-field");
+    		}
+    	}
+    	
+    	return emptyInput;
     }
 }

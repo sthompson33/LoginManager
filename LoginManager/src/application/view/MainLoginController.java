@@ -5,6 +5,9 @@
 package application.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
@@ -17,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -47,17 +51,20 @@ public class MainLoginController {
 
 	@FXML
 	private ImageView displayImage, userIcon, userIcon2, userIcon3, lockIcon, lockIcon2, emailIcon;
-
+	
+	private ArrayList<TextField> textFieldList = new ArrayList<TextField>(3);
+	
 	public void initialize(){
-    	
+		
 		signInPane.toFront();
-    	
+    
     	textArea.setEditable(false);
     	textArea.setFocusTraversable(false);
     	textArea.setMouseTransparent(false);
     }
     
-    /**
+	/**
+     * 
      * 
      */
     
@@ -88,26 +95,82 @@ public class MainLoginController {
     @FXML
     public void signInListener(ActionEvent event) throws IOException {
     	
+    	textFieldList.clear();
+    	textFieldList.add(signInUsername);
+    	textFieldList.add(signInPassword);
     	
-    	//check correct info here, then call switchScene()
-    	switchScene(event);
+    	if(!checkForEmptyInput(textFieldList))
+    		switchScene(event);
     }
+    
+    /**
+     * 
+     * 
+     */
 
     @FXML
     public void signUpListener(ActionEvent event) throws IOException {
     	
-    	//check correct info here, then call switchScene()
-    	switchScene(event);
-
+    	textFieldList.clear();
+    	textFieldList.add(signUpUsername);
+    	textFieldList.add(signUpEmail);
+    	textFieldList.add(signUpPassword);
+    	
+    	if(!checkForEmptyInput(textFieldList))
+    		switchScene(event);	
     }
+    
+    /**
+     * 
+     * 
+     */
+    
+    public void retrieveListener(){
+    	
+    	textFieldList.clear();
+    	textFieldList.add(retrieveField);
+    	
+    	if(!checkForEmptyInput(textFieldList)) {
+    		JOptionPane.showMessageDialog(null, "Email Sent!");
+    	}
+    }
+    
+    /**
+     * 
+     * 
+     */
     
     private void switchScene(ActionEvent event) throws IOException{
     	
     	AnchorPane root = FXMLLoader.load(getClass().getResource("MenuOption.fxml"));
 		Scene menuScene = new Scene(root);
-		Stage menuStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		menuStage.setScene(menuScene);
-		menuStage.show();
+		Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		currentStage.setScene(menuScene);
+		currentStage.show();
     }
-
- }
+    
+    /**
+     * 
+     * 
+     */
+    
+    private boolean checkForEmptyInput(ArrayList<TextField> textfield) {
+    	
+    	boolean emptyInput = false;
+    	
+    	for(TextField tf : textfield) {
+    		
+    		if(tf.getText().isEmpty()) {
+    			
+    			tf.getStyleClass().add("jfx-text-field-error");
+    			emptyInput = true;
+    		}
+    		else {
+    			tf.getStyleClass().clear();
+    			tf.getStyleClass().addAll("text-field", "text-input", "jfx-text-field");
+    		}
+    	}
+    	
+    	return emptyInput;
+    }
+}
