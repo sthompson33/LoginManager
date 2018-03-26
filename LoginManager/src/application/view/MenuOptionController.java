@@ -15,6 +15,8 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
 
+import application.model.Account;
+import application.model.LoginInformation;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -71,10 +73,20 @@ public class MenuOptionController {
     private JFXCheckBox usernameCheckBox, passwordCheckBox;
     
     private ArrayList<TextField> textFieldList = new ArrayList<TextField>(3);
-    
+   
     public void initialize(){
-    
+    	
     	displayPane.toFront();
+    }
+    
+    /**
+     * 
+     * 
+     */
+    
+    public void init_Username(Account account) {
+    	
+    	LoginInformation.fileName = account.getUsername();
     }
     
     /**
@@ -87,17 +99,23 @@ public class MenuOptionController {
     	
     	helpToggle.setSelected(false);
     	
-    	if(event.getSource() == addNewMenuButton)
+    	if(event.getSource() == addNewMenuButton) {
     		addNewPane.toFront();
+    		addWebsiteField.requestFocus();
+    	}
     	
-    	if(event.getSource() == retrieveMenuButton)
+    	if(event.getSource() == retrieveMenuButton) {
     		retrievePane.toFront();
+    		retrieveWebsiteField.requestFocus();
+    	}
     	
     	if(event.getSource() == updateMenuButton)
     		updatePane.toFront();
     	
-    	if(event.getSource() == deleteMenuButton)
+    	if(event.getSource() == deleteMenuButton) {
     		deletePane.toFront();
+    		deleteWebsiteField.requestFocus();
+    	}
     	
     	if(event.getSource() == exitMenuButton)
     		System.exit(0);
@@ -117,8 +135,9 @@ public class MenuOptionController {
     	textFieldList.add(addPasswordField);
     	
     	if(!checkForEmptyInput(textFieldList)) {
-    		
-    		JOptionPane.showMessageDialog(null, "New information saved!");
+    		LoginInformation.addNewLogin(addWebsiteField.getText(), addUsernameField.getText(), addPasswordField.getText());
+    		clearFields();
+    		addWebsiteField.requestFocus();
     	}
     }
     
@@ -134,7 +153,11 @@ public class MenuOptionController {
     	textFieldList.add(retrieveWebsiteField);
     	
     	if(!checkForEmptyInput(textFieldList)) {
-    		JOptionPane.showMessageDialog(null, "Here is website login");
+    		String[] login = LoginInformation.retrieveLogin(retrieveWebsiteField.getText());
+    		usernameResult.setText(login[0]);
+    		passwordResult.setText(login[1]);
+    		clearFields();
+    		retrieveWebsiteField.requestFocus();
     	}
     }
     
@@ -159,7 +182,8 @@ public class MenuOptionController {
     		JOptionPane.showMessageDialog(null, "you must select username or password to update");
     	else {
     		if(!checkForEmptyInput(textFieldList)) {
-    			JOptionPane.showMessageDialog(null, "information updated");
+    			LoginInformation.updateLogin(updateWebsiteField.getText(), updateUsernameField.getText(), updatePasswordField.getText());
+    			clearFields();
     		}
     	}
     }
@@ -198,7 +222,9 @@ public class MenuOptionController {
     	textFieldList.add(deleteWebsiteField);
     	
     	if(!checkForEmptyInput(textFieldList)) {
-    		JOptionPane.showMessageDialog(null, "information deleted");
+    		LoginInformation.deleteLogin(deleteWebsiteField.getText());
+    		clearFields();
+    		deleteWebsiteField.requestFocus();
     	}
     }
     
@@ -254,5 +280,16 @@ public class MenuOptionController {
     	}
     	
     	return emptyInput;
+    }
+    
+    public void clearFields() {
+    	addWebsiteField.clear();
+    	addUsernameField.clear();
+    	addPasswordField.clear();
+    	retrieveWebsiteField.clear();
+    	updateWebsiteField.clear();
+    	updateUsernameField.clear();
+    	updatePasswordField.clear();
+    	deleteWebsiteField.clear();
     }
 }

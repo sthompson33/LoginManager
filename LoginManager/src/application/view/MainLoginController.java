@@ -13,6 +13,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
+import application.model.Account;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,7 +39,7 @@ public class MainLoginController {
 	private Button select_SignIn, select_SignUp, forgotButton;
 
 	@FXML
-	private JFXTextField signInUsername, signUpUsername, signUpEmail, retrieveField;
+	private JFXTextField signInUsername, signUpUsername, signUpEmail, forgotField;
 
 	@FXML
 	private JFXPasswordField signInPassword, signUpPassword;
@@ -53,12 +54,13 @@ public class MainLoginController {
 	private ImageView displayImage, userIcon, userIcon2, userIcon3, lockIcon, lockIcon2, emailIcon;
 	
 	private ArrayList<TextField> textFieldList = new ArrayList<TextField>(3);
+	private Account userAccount;
 	
 	public void initialize(){
 		
 		signInPane.toFront();
-    
-    	textArea.setEditable(false);
+		
+		textArea.setEditable(false);
     	textArea.setFocusTraversable(false);
     	textArea.setMouseTransparent(false);
     }
@@ -71,17 +73,26 @@ public class MainLoginController {
     @FXML
     public void switchPaneListener(ActionEvent event) {
     	
-    	if(event.getSource() == select_SignUp)
-    		signUpPane.toFront();
     	
-    	if(event.getSource() == select_SignIn)
+    	if(event.getSource() == select_SignIn) {
     		signInPane.toFront();
+    		signInUsername.requestFocus();
+    	}
     	
-    	if(event.getSource() == forgotButton)
+    	if(event.getSource() == forgotButton) {
     		forgotPane.toFront();
+    		forgotField.requestFocus();
+    	}
     	
-    	if(event.getSource() == backButton)
+    	if(event.getSource() == select_SignUp) {
+    		signUpPane.toFront();
+    		signUpUsername.requestFocus();
+    	}
+    	
+    	if(event.getSource() == backButton) {
     		signInPane.toFront();
+    		signInUsername.requestFocus();
+    	}
     	
     	if(event.getSource() == exitButton)
     		System.exit(0);
@@ -99,8 +110,14 @@ public class MainLoginController {
     	textFieldList.add(signInUsername);
     	textFieldList.add(signInPassword);
     	
-    	if(!checkForEmptyInput(textFieldList))
-    		switchScene(event);
+    	if(!checkForEmptyInput(textFieldList)) {
+    		userAccount = new Account(signInUsername.getText(), signInPassword.getText());
+    		if(userAccount.findAccount()) {
+    			switchScene(event);
+    		}
+    		else
+    			JOptionPane.showMessageDialog(null, "username or password incorrect");
+    	}
     }
     
     /**
@@ -113,11 +130,18 @@ public class MainLoginController {
     	
     	textFieldList.clear();
     	textFieldList.add(signUpUsername);
-    	textFieldList.add(signUpEmail);
     	textFieldList.add(signUpPassword);
+    	textFieldList.add(signUpEmail);
     	
-    	if(!checkForEmptyInput(textFieldList))
-    		switchScene(event);	
+    	if(!checkForEmptyInput(textFieldList)) {
+    		userAccount = new Account(signUpUsername.getText(), signUpPassword.getText(), signUpEmail.getText());
+    		if(!userAccount.findAccount()) {
+    			userAccount.createAccount();
+    			switchScene(event);
+    		}
+    		else
+    			JOptionPane.showMessageDialog(null, "account already exist");
+    	}
     }
     
     /**
@@ -128,7 +152,7 @@ public class MainLoginController {
     public void retrieveListener(){
     	
     	textFieldList.clear();
-    	textFieldList.add(retrieveField);
+    	textFieldList.add(forgotField);
     	
     	if(!checkForEmptyInput(textFieldList)) {
     		JOptionPane.showMessageDialog(null, "Email Sent!");
@@ -142,8 +166,15 @@ public class MainLoginController {
     
     private void switchScene(ActionEvent event) throws IOException{
     	
-    	AnchorPane root = FXMLLoader.load(getClass().getResource("MenuOption.fxml"));
-		Scene menuScene = new Scene(root);
+    	FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("MenuOption.fxml"));
+    	AnchorPane root = loader.load();
+    	Scene menuScene = new Scene(root);
+    	
+    	//access new controller and pass account object to it
+    	MenuOptionController controller = loader.getController();
+    	controller.init_Username(userAccount);
+    	
 		Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
 		currentStage.setScene(menuScene);
 		currentStage.show();
@@ -161,7 +192,6 @@ public class MainLoginController {
     	for(TextField tf : textfield) {
     		
     		if(tf.getText().isEmpty()) {
-    			
     			tf.getStyleClass().add("jfx-text-field-error");
     			emptyInput = true;
     		}
