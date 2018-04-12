@@ -6,10 +6,9 @@ package application.model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
-
-import javax.swing.JOptionPane;
 
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -23,6 +22,11 @@ public class Account {
 
 	private String username, password, email;
 	private BasicTextEncryptor code = new BasicTextEncryptor();
+	
+	
+	public Account() {
+		
+	}
 	
 	public Account(String username, String password) {
 	
@@ -86,24 +90,56 @@ public class Account {
 		try {
 			Scanner scan = new Scanner(new File("accounts.txt"));
 			while(scan.hasNext()) {
-				String user = scan.nextLine();
-				String pass = scan.nextLine();
-				String email = scan.nextLine();
+				String user = code.decrypt(scan.nextLine());
+				String pass = code.decrypt(scan.nextLine());
+				scan.nextLine(); //read next line not used here
 				
-				if(code.decrypt(user).equals(username) && code.decrypt(pass).equals(password)) {
+				if(user.equals(username) && pass.equals(password)) {
 					found = true;
 				}
 			}
 			scan.close();
 		}
 		catch(FileNotFoundException e) {
-			//e.printStackTrace();
+			e.printStackTrace();
+		}
+		
+		return found;
+	}
+	
+	public boolean findUsername(String user) {
+		
+		boolean found = false;
+		
+		try {
+			code.setPassword("loginmanager");
+		}
+		catch(AlreadyInitializedException e) {
+			
+		}
+		
+		try {
+			Scanner scan = new Scanner(new File("accounts.txt"));
+			while(scan.hasNext()) {
+				username = code.decrypt(scan.nextLine());
+				password = code.decrypt(scan.nextLine());
+				email = code.decrypt(scan.nextLine());
+				
+				if(user.equals(username)) {
+					found = true;
+				}
+			}
+			scan.close();
+		}
+		catch(FileNotFoundException e) {
+			e.printStackTrace();
 		}
 		
 		return found;
 	}
 	
 	/**
+	 * 
 	 * 
      * 
      */
@@ -128,8 +164,9 @@ public class Account {
 			
 			//creates a specific file for each new account created
 			FileOutputStream fos2 = new FileOutputStream(username + ".txt");
+			fos2.close();
 		}
-		catch(FileNotFoundException e) {
+		catch(IOException e) {
 			e.printStackTrace();
 		}
 		

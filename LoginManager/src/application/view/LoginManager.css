@@ -8,6 +8,7 @@
 
 .jfx-text-field-error{
 	-jfx-unfocus-color: #ff0000;
+	-fx-prompt-text-fill: #ff0000;
 }
 
 .pane{
@@ -38,6 +39,7 @@ text-area code
 .text-area *.text{
 	-fx-text-alignment: justify;
 }
+
 
 
 

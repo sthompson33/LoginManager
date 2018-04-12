@@ -9,7 +9,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class LoginManager extends Application {
 
@@ -21,12 +23,14 @@ public class LoginManager extends Application {
 		
 		//load fxml file
 		Parent mainParent = FXMLLoader.load(getClass().getResource("view/MainLogin.fxml"));
+
 		
 		//build scene graph
 		Scene mainScene = new Scene(mainParent);
 		
 		//display window with scene
-		stage.setTitle("Login Manager");
+		stage.getIcons().add(new Image("/images/blue_lock.png"));
+		stage.initStyle(StageStyle.UNDECORATED);
 		stage.setScene(mainScene);
 		stage.show();
 	}
