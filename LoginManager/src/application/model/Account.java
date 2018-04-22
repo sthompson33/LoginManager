@@ -8,7 +8,16 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Properties;
 import java.util.Scanner;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.util.text.BasicTextEncryptor;
@@ -101,11 +110,16 @@ public class Account {
 			scan.close();
 		}
 		catch(FileNotFoundException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		return found;
 	}
+	
+	/**
+     * 
+     * 
+     */
 	
 	public boolean findUsername(String user) {
 		
@@ -127,12 +141,13 @@ public class Account {
 				
 				if(user.equals(username)) {
 					found = true;
+					break;
 				}
 			}
 			scan.close();
 		}
 		catch(FileNotFoundException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		return found;
@@ -170,6 +185,48 @@ public class Account {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	/**
+	 * 
+	 * 
+     * 
+     */
+	
+	public void sendEmail() {
+		
+		final String SENDER = "LoginManager3@gmail.com";
+		final String PASSWORD = "reganaMnigoL12";
+		
+		Properties props = new Properties();
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+          new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(SENDER, PASSWORD);
+            }
+          });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(SENDER));
+            message.setRecipients(Message.RecipientType.TO,
+                InternetAddress.parse(email));
+            message.setSubject("Password Recovery <Do Not Reply>");
+            message.setText("Your Login Manager password is " + password);
+
+            Transport.send(message);
+
+            //System.out.println("Done");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 	}
 		
 	

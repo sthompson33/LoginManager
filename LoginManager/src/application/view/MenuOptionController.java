@@ -14,11 +14,13 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 import com.jfoenix.controls.JFXTextField;
 
+import application.LoginManager;
 import application.model.Account;
 import application.model.LoginInformation;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -28,6 +30,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -40,14 +43,15 @@ public class MenuOptionController {
     private AnchorPane rootAnchor;
 
     @FXML
-    private Button signOutButton;
+    private Button closeButton, minButton;
 
     @FXML
     private VBox menuBox;
 
     //JFXButtons on the menuBox 
     @FXML
-    private JFXButton addNewMenuButton, retrieveMenuButton, updateMenuButton, deleteMenuButton, exitMenuButton;
+    private JFXButton addNewMenuButton, retrieveMenuButton, updateMenuButton, deleteMenuButton, signOutButton
+    ;
     
     //JFXButtons on each corresponding pane
     @FXML 
@@ -80,10 +84,18 @@ public class MenuOptionController {
 	private String cssGreenSnackbar = this.getClass().getResource("GreenSnackbar.css").toExternalForm();
 	private String cssRedSnackbar = this.getClass().getResource("RedSnackbar.css").toExternalForm();
     private Scene scene;
+    private Image closeImage, minImage;
+    private double xOffset = 0;
+    private double yOffset = 0;
    
     public void initialize(){
     	
     	displayPane.toFront();
+    	
+    	closeImage = new Image("/images/close.png");
+		minImage = new Image("/images/min.png");
+		closeButton.setGraphic(new ImageView(closeImage));
+		minButton.setGraphic(new ImageView(minImage));
     	
     	addNewSnackbar = new JFXSnackbar(addNewPane);
     	retrieveSnackbar = new JFXSnackbar(retrievePane);
@@ -142,6 +154,23 @@ public class MenuOptionController {
     		clearFields();
     		deletePane.toFront();
     		deleteWebsiteField.requestFocus();
+    	}
+    }
+    
+    /**
+     * 
+     * 
+     */
+    
+    @FXML
+    public void titleButtonListener(ActionEvent event) {
+    	
+    	if(event.getSource() == closeButton) {
+    		System.exit(0);
+    	}
+    	
+    	if(event.getSource() == minButton) {
+    		LoginManager.getStage().setIconified(true);
     	}
     }
     
@@ -309,11 +338,32 @@ public class MenuOptionController {
     @FXML
     public void switchSceneListener(ActionEvent event) throws IOException{
     	
+    	Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	
     	AnchorPane root = FXMLLoader.load(getClass().getResource("MainLogin.fxml"));
+    	
+    	root.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				xOffset = currentStage.getX() - event.getScreenX();
+				yOffset = currentStage.getY() - event.getScreenY();
+			}
+		});
+		
+		root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			
+			@Override
+			public void handle(MouseEvent event) {
+				currentStage.setX(event.getScreenX() + xOffset);
+				currentStage.setY(event.getScreenY() + yOffset);
+			}
+		});
+    	
 		Scene mainScene = new Scene(root);
-		Stage mainStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-		mainStage.setScene(mainScene);
-		mainStage.show();
+		
+		currentStage.setScene(mainScene);
+		currentStage.show();
     }
     
     private void getScene() {

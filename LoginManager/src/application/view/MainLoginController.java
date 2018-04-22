@@ -13,10 +13,12 @@ import com.jfoenix.controls.JFXSnackbar;
 import com.jfoenix.controls.JFXSnackbar.SnackbarEvent;
 import com.jfoenix.controls.JFXTextField;
 
+import application.LoginManager;
 import application.model.Account;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -26,6 +28,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -39,7 +42,7 @@ public class MainLoginController{
 	private Pane signInPane, signUpPane, forgotPane;
 
 	@FXML
-	private Button select_SignIn, select_SignUp, forgotButton;
+	private Button select_SignIn, select_SignUp, forgotButton, closeButton, minButton;
 
 	@FXML
 	private JFXTextField signInUsername, signUpUsername, signUpEmail, forgotField;
@@ -66,10 +69,18 @@ public class MainLoginController{
 	private String cssGreenSnackbar = this.getClass().getResource("GreenSnackbar.css").toExternalForm();
 	private String cssRedSnackbar = this.getClass().getResource("RedSnackbar.css").toExternalForm();
 	private Scene scene;
-
+	private Image closeImage, minImage;
+	private double xOffset = 0;
+	private double yOffset = 0;
+	
 	public void initialize(){
 		
 		signInPane.toFront();
+		
+		closeImage = new Image("/images/close.png");
+		minImage = new Image("/images/min.png");
+		closeButton.setGraphic(new ImageView(closeImage));
+		minButton.setGraphic(new ImageView(minImage));
 		
 		signInSnackbar = new JFXSnackbar(signInPane);
 		signUpSnackbar = new JFXSnackbar(signUpPane);
@@ -87,6 +98,9 @@ public class MainLoginController{
     	signUpPassword.focusedProperty().addListener(passwordListener);
     	
     	signUpEmail.focusedProperty().addListener(emailListener);
+    	
+    
+    
     }
     
 	/**
@@ -97,28 +111,38 @@ public class MainLoginController{
     @FXML
     public void switchPaneListener(ActionEvent event) {
     	
+    	clearFields();
+    
     	if(event.getSource() == select_SignIn) {
-    		clearFields();
     		signInPane.toFront();
     		signInUsername.requestFocus();
     	}
     	
     	if(event.getSource() == forgotButton) {
-    		clearFields();
     		forgotPane.toFront();
     		forgotField.requestFocus();
     	}
     	
     	if(event.getSource() == select_SignUp) {
-    		clearFields();
     		signUpPane.toFront();
     		signUpUsername.requestFocus();
     	}
     	
     	if(event.getSource() == backButton) {
-    		clearFields();
     		signInPane.toFront();
     		signInUsername.requestFocus();
+    	}
+    }
+    
+    @FXML
+    public void titleButtonListener(ActionEvent event) {
+    	
+    	if(event.getSource() == closeButton) {
+    		System.exit(0);
+    	}
+    	
+    	if(event.getSource() == minButton) {
+    		LoginManager.getStage().setIconified(true);
     	}
     }
     
@@ -187,7 +211,9 @@ public class MainLoginController{
     	
     	if(!checkForEmptyInput(textFieldList)) {
     		userAccount = new Account();
+    		//see if username exists, then proceed to send email
     		if(userAccount.findUsername(forgotField.getText())) {
+    			userAccount.sendEmail();
     			setSnackbarStyle(cssGreenSnackbar);
     			forgotSnackbar.enqueue(new SnackbarEvent("Email Sent!"));
     		}
@@ -204,17 +230,38 @@ public class MainLoginController{
      */
     
     private void switchScene(ActionEvent event) throws IOException{
+    
+    	Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
     	
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource("MenuOption.fxml"));
     	AnchorPane root = loader.load();
-    	Scene menuScene = new Scene(root);
+    
+    	root.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				xOffset = currentStage.getX() - event.getScreenX();
+				yOffset = currentStage.getY() - event.getScreenY();
+			}
+		});
+		
+		root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			
+			@Override
+			public void handle(MouseEvent event) {
+				currentStage.setX(event.getScreenX() + xOffset);
+				currentStage.setY(event.getScreenY() + yOffset);
+			}
+		});
+		
+		Scene menuScene = new Scene(root);
     	
     	//access new controller and pass account object to it
     	MenuOptionController controller = loader.getController();
     	controller.init_Username(userAccount);
     	
-		Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+		
 		currentStage.setScene(menuScene);
 		currentStage.show();
     }
