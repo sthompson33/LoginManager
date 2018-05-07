@@ -17,7 +17,7 @@
 
 <AnchorPane fx:id="rootAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" styleClass="pane" stylesheets="@LoginManager.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.MainLoginController">
    <children>
-      <Button fx:id="minButton" layoutX="735.0" layoutY="3.0" mnemonicParsing="false" onAction="#titleButtonListener" prefHeight="25.0" prefWidth="25.0" styleClass="button-window" stylesheets="@LoginManager.css">
+      <Button fx:id="minButton" layoutX="730.0" layoutY="3.0" mnemonicParsing="false" onAction="#titleButtonListener" prefHeight="25.0" prefWidth="25.0" styleClass="button-window" stylesheets="@LoginManager.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
@@ -120,53 +120,6 @@
             </JFXButton>
          </children>
       </Pane>
-      <Pane fx:id="forgotPane" layoutX="400.0" layoutY="30.0" prefHeight="370.0" prefWidth="400.0" styleClass="pane" stylesheets="@LoginManager.css">
-         <children>
-            <TextArea fx:id="textArea" focusTraversable="false" layoutX="43.0" layoutY="18.0" prefHeight="118.0" prefWidth="310.0" promptText="Enter username below. Password will be sent to the email address associated with this account." styleClass="text-area" stylesheets="@LoginManager.css">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </TextArea>
-            <JFXTextField fx:id="forgotField" focusColor="WHITE" labelFloat="true" layoutX="55.0" layoutY="155.0" prefHeight="30.0" prefWidth="260.0" promptText="Username" styleClass="jfx-text-field" stylesheets="@LoginManager.css" unFocusColor="SILVER">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </JFXTextField>
-            <ImageView fx:id="userIcon3" fitHeight="25.0" fitWidth="25.0" layoutX="317.0" layoutY="162.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="/images/gray_user.png" />
-               </image>
-            </ImageView>
-            <JFXButton fx:id="retrieveButton" focusTraversable="false" layoutX="55.0" layoutY="248.0" onAction="#retrieveListener" prefHeight="30.0" prefWidth="290.0" style="-fx-background-color: #336699;" text="Retrieve Password" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <ripplerFill>
-                  <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
-                     <stops>
-                        <Stop color="#336699" />
-                        <Stop color="#336699" offset="0.007662835249042145" />
-                        <Stop color="WHITE" offset="1.0" />
-                     </stops>
-                  </RadialGradient>
-               </ripplerFill>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </JFXButton>
-            <JFXButton fx:id="backButton" layoutX="55.0" layoutY="288.0" onAction="#switchPaneListener" prefHeight="30.0" prefWidth="290.0" style="-fx-background-color: #336699;" text="Go Back" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </JFXButton>
-         </children>
-      </Pane>
       <Pane fx:id="signInPane" layoutX="400.0" layoutY="30.0" prefHeight="370.0" prefWidth="400.0" styleClass="pane" stylesheets="@LoginManager.css">
          <children>
             <Label layoutX="55.0" layoutY="28.0" stylesheets="@LoginManager.css" text="Sign In" textFill="#336699">
@@ -225,6 +178,53 @@
                      </stops>
                   </RadialGradient>
                </ripplerFill>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+         </children>
+      </Pane>
+      <Pane fx:id="forgotPane" layoutX="400.0" layoutY="30.0" prefHeight="370.0" prefWidth="400.0" styleClass="pane" stylesheets="@LoginManager.css">
+         <children>
+            <TextArea fx:id="textArea" focusTraversable="false" layoutX="43.0" layoutY="18.0" prefHeight="118.0" prefWidth="310.0" promptText="Enter username below. Password will be sent to the email address associated with this account." styleClass="text-area" stylesheets="@LoginManager.css">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </TextArea>
+            <JFXTextField fx:id="forgotUsername" focusColor="WHITE" labelFloat="true" layoutX="55.0" layoutY="155.0" prefHeight="30.0" prefWidth="260.0" promptText="Username" styleClass="jfx-text-field" stylesheets="@LoginManager.css" unFocusColor="SILVER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXTextField>
+            <ImageView fx:id="userIcon3" fitHeight="25.0" fitWidth="25.0" layoutX="317.0" layoutY="162.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="/images/gray_user.png" />
+               </image>
+            </ImageView>
+            <JFXButton fx:id="retrieveButton" focusTraversable="false" layoutX="55.0" layoutY="240.0" onAction="#forgotListener" prefHeight="30.0" prefWidth="290.0" style="-fx-background-color: #336699;" text="Retrieve Password" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <ripplerFill>
+                  <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                     <stops>
+                        <Stop color="#336699" />
+                        <Stop color="#336699" offset="0.007662835249042145" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </RadialGradient>
+               </ripplerFill>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton fx:id="backButton" layoutX="55.0" layoutY="288.0" onAction="#switchPaneListener" prefHeight="30.0" prefWidth="290.0" style="-fx-background-color: #336699;" text="Go Back" textFill="WHITE">
+               <font>
+                  <Font size="14.0" />
+               </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

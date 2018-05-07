@@ -20,7 +20,7 @@
 
 <AnchorPane fx:id="rootAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.view.MenuOptionController">
    <children>
-      <Button fx:id="minButton" layoutX="735.0" layoutY="3.0" mnemonicParsing="false" onAction="#titleButtonListener" prefHeight="25.0" prefWidth="25.0" styleClass="button-window" stylesheets="@LoginManager.css">
+      <Button fx:id="minButton" layoutX="730.0" layoutY="3.0" mnemonicParsing="false" onAction="#titleButtonListener" prefHeight="25.0" prefWidth="25.0" styleClass="button-window" stylesheets="@LoginManager.css">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

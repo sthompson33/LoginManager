@@ -19,14 +19,21 @@ import org.jasypt.util.text.BasicTextEncryptor;
  */
 public class LoginInformation {
 	
-	private static String website, username, password;
-	public static String fileName;
+	private static String fileName, website, username, password;
 	private static BasicTextEncryptor code = new BasicTextEncryptor();
 
 	/**
-     * 
-     * 
-     */
+	 * @param file
+	 */
+	
+	public static void setFileName(String file) {
+		fileName = file;
+	}
+	
+	/**
+	 * @param site
+	 * @return
+	 */
 	
 	public static boolean findWebsite(String site) {
 		
@@ -59,10 +66,13 @@ public class LoginInformation {
 		return found;
 	}
 	
+	
+	
 	/**
-     * 
-     * 
-     */
+	 * @param site
+	 * @param username
+	 * @param password
+	 */
 	
 	public static void addNewLogin(String site, String username, String password) {
 		
@@ -78,12 +88,9 @@ public class LoginInformation {
 		}
 	}
 		
-	
-	
 	/**
-     * 
-     * 
-     */
+	 * @return
+	 */
 	
 	public static String[] retrieveLogin() {
 		
@@ -93,11 +100,11 @@ public class LoginInformation {
 	
 		return login;
 	}
-	
+
 	/**
-     * 
-     * 
-     */
+	 * @param username
+	 * @param password
+	 */
 	
 	public static void updateLogin(String username, String password) {
 		
@@ -137,9 +144,8 @@ public class LoginInformation {
 	}
 		
 	/**
-     * 
-     * 
-     */
+	 * 
+	 */
 	
 	public static void deleteLogin() {
 		

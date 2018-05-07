@@ -80,10 +80,10 @@ public class Account {
 		return email;
 	}
 	
+	
 	/**
-     * 
-     * 
-     */
+	 * @return
+	 */
 	
 	public boolean findAccount() {
 		  
@@ -105,6 +105,7 @@ public class Account {
 				
 				if(user.equals(username) && pass.equals(password)) {
 					found = true;
+					break;
 				}
 			}
 			scan.close();
@@ -117,9 +118,9 @@ public class Account {
 	}
 	
 	/**
-     * 
-     * 
-     */
+	 * @param user
+	 * @return
+	 */
 	
 	public boolean findUsername(String user) {
 		
@@ -153,11 +154,10 @@ public class Account {
 		return found;
 	}
 	
+
 	/**
 	 * 
-	 * 
-     * 
-     */
+	 */
 	
 	public void createAccount(){
 		
@@ -189,9 +189,7 @@ public class Account {
 	
 	/**
 	 * 
-	 * 
-     * 
-     */
+	 */
 	
 	public void sendEmail() {
 		

@@ -17,8 +17,6 @@ import com.jfoenix.controls.JFXTextField;
 import application.LoginManager;
 import application.model.Account;
 import application.model.LoginInformation;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -75,43 +73,65 @@ public class MenuOptionController {
     @FXML
     private JFXCheckBox usernameCheckBox, passwordCheckBox;
     
-    private JFXSnackbar addNewSnackbar, retrieveSnackbar, updateSnackbar, deleteSnackbar;
-    private WebIconChangeListener webListener = new WebIconChangeListener();
-    private UserIconChangeListener userListener = new UserIconChangeListener();
-    private PasswordIconChangeListener passListener = new PasswordIconChangeListener();
     private ArrayList<TextField> textFieldList = new ArrayList<TextField>(3);
     private String cssLoginManager = this.getClass().getResource("LoginManager.css").toExternalForm();
 	private String cssGreenSnackbar = this.getClass().getResource("GreenSnackbar.css").toExternalForm();
 	private String cssRedSnackbar = this.getClass().getResource("RedSnackbar.css").toExternalForm();
-    private Scene scene;
-    private Image closeImage, minImage;
-    private double xOffset = 0;
-    private double yOffset = 0;
-   
+    
     public void initialize(){
     	
     	displayPane.toFront();
     	
-    	closeImage = new Image("/images/close.png");
-		minImage = new Image("/images/min.png");
-		closeButton.setGraphic(new ImageView(closeImage));
-		minButton.setGraphic(new ImageView(minImage));
+    	closeButton.setGraphic(new ImageView(new Image("/images/close.png")));
+		minButton.setGraphic(new ImageView(new Image("/images/min.png")));
+		
+		Image blueWeb = new Image("/images/blue_web.png");
+		Image grayWeb = new Image("/images/gray_web.png");
     	
-    	addNewSnackbar = new JFXSnackbar(addNewPane);
-    	retrieveSnackbar = new JFXSnackbar(retrievePane);
-    	updateSnackbar = new JFXSnackbar(updatePane);
-    	deleteSnackbar = new JFXSnackbar(deletePane);
+    	JFXTextField[] webFields = {addWebsiteField, retrieveWebsiteField, updateWebsiteField, deleteWebsiteField};
+    	ImageView[] webIcons = {webIconA, webIconR, webIconU, webIconD};
     	
-    	addWebsiteField.focusedProperty().addListener(webListener);
-    	retrieveWebsiteField.focusedProperty().addListener(webListener);
-    	updateWebsiteField.focusedProperty().addListener(webListener);
-    	deleteWebsiteField.focusedProperty().addListener(webListener);
+    	for(int i = 0; i < webFields.length; i++) {
+    		final int j = i;
+    		webFields[i].focusedProperty().addListener((observable, oldValue, newValue) ->{
+    			if(newValue)
+    				webIcons[j].setImage(blueWeb);
+    			else
+    				webIcons[j].setImage(grayWeb);
+    		});
+    	}
     	
-    	addUsernameField.focusedProperty().addListener(userListener);
-    	updateUsernameField.focusedProperty().addListener(userListener);
+    	Image blueUser = new Image("/images/blue_user.png");
+    	Image grayUser = new Image("/images/gray_user.png");
     	
-    	addPasswordField.focusedProperty().addListener(passListener);
-    	updatePasswordField.focusedProperty().addListener(passListener);
+    	JFXTextField[] userFields = {addUsernameField, updateUsernameField};
+    	ImageView[] userIcons = {userIconA, userIconU};
+    	
+    	for(int i = 0; i < userFields.length; i++) {
+    		final int j = i;
+    		userFields[i].focusedProperty().addListener((observable, oldValue, newValue) ->{
+    			if(newValue)
+    				userIcons[j].setImage(blueUser);
+    			else
+    				userIcons[j].setImage(grayUser);
+    		});
+    	}
+    	
+    	Image blueLock = new Image("/images/blue_lock.png");
+    	Image grayLock = new Image("/images/gray_lock.png");
+    	
+    	JFXPasswordField[] passwordFields = {addPasswordField, updatePasswordField};
+    	ImageView[] lockIcons = {lockIconA, lockIconU};
+    	
+    	for(int i = 0; i < passwordFields.length; i++) {
+    		final int j = i;
+    		passwordFields[i].focusedProperty().addListener((observable, oldValue, newValue) -> {
+    			if(newValue)
+    				lockIcons[j].setImage(blueLock);
+    			else
+    				lockIcons[j].setImage(grayLock);
+    		});
+    	}
     }
     
     /**
@@ -121,7 +141,7 @@ public class MenuOptionController {
     
     public void init_Username(Account account) {
     	
-    	LoginInformation.fileName = account.getUsername();
+    	LoginInformation.setFileName(account.getUsername());
     }
     
     /**
@@ -132,26 +152,24 @@ public class MenuOptionController {
     @FXML
     public void switchPaneListener(ActionEvent event){
     	
+    	clearFields();
+    	
     	if(event.getSource() == addNewMenuButton) {
-    		clearFields();
     		addNewPane.toFront();
     		addWebsiteField.requestFocus();
     	}
     	
     	if(event.getSource() == retrieveMenuButton) {
-    		clearFields();
     		retrievePane.toFront();
     		retrieveWebsiteField.requestFocus();
     	}
     	
     	if(event.getSource() == updateMenuButton) {
-    		clearFields();
     		updatePane.toFront();
     		updateWebsiteField.requestFocus();
     	}
     	
     	if(event.getSource() == deleteMenuButton) {
-    		clearFields();
     		deletePane.toFront();
     		deleteWebsiteField.requestFocus();
     	}
@@ -182,7 +200,8 @@ public class MenuOptionController {
     @FXML
     public void addNewListener() {
     	
-    	getScene();
+    	JFXSnackbar addNewSnackbar = new JFXSnackbar(addNewPane);
+    	
     	textFieldList.clear();
     	textFieldList.add(addWebsiteField);
     	textFieldList.add(addUsernameField);
@@ -212,7 +231,8 @@ public class MenuOptionController {
     @FXML
     public void retrieveListener() {
     	
-    	getScene();
+    	JFXSnackbar retrieveSnackbar = new JFXSnackbar(retrievePane);
+    	
     	textFieldList.clear();
     	textFieldList.add(retrieveWebsiteField);
     	
@@ -241,7 +261,8 @@ public class MenuOptionController {
     @FXML
     public void updateListener() {
     	
-    	getScene();
+    	JFXSnackbar updateSnackbar = new JFXSnackbar(updatePane);
+    	
     	textFieldList.clear();
     	textFieldList.add(updateWebsiteField);
     	
@@ -308,7 +329,8 @@ public class MenuOptionController {
     @FXML
     public void deletListener() {
     	
-    	getScene();
+    	JFXSnackbar deleteSnackbar = new JFXSnackbar(deletePane);
+    	
     	textFieldList.clear();
     	textFieldList.add(deleteWebsiteField);
     	
@@ -335,6 +357,9 @@ public class MenuOptionController {
      * 
      */
     
+    private double startX = 0;
+    private double startY = 0;
+    
     @FXML
     public void switchSceneListener(ActionEvent event) throws IOException{
     	
@@ -346,8 +371,8 @@ public class MenuOptionController {
 
 			@Override
 			public void handle(MouseEvent event) {
-				xOffset = currentStage.getX() - event.getScreenX();
-				yOffset = currentStage.getY() - event.getScreenY();
+				startX = currentStage.getX() - event.getScreenX();
+				startY = currentStage.getY() - event.getScreenY();
 			}
 		});
 		
@@ -355,8 +380,8 @@ public class MenuOptionController {
 			
 			@Override
 			public void handle(MouseEvent event) {
-				currentStage.setX(event.getScreenX() + xOffset);
-				currentStage.setY(event.getScreenY() + yOffset);
+				currentStage.setX(event.getScreenX() + startX);
+				currentStage.setY(event.getScreenY() + startY);
 			}
 		});
     	
@@ -366,11 +391,12 @@ public class MenuOptionController {
 		currentStage.show();
     }
     
-    private void getScene() {
-    	scene = rootAnchor.getScene();
-    }
+    /**
+     * @param style - set the style of the snackbar with the red or green css file
+     */
     
     private void setSnackbarStyle(String style) {
+    	Scene scene = rootAnchor.getScene();
     	scene.getStylesheets().clear();
     	scene.getStylesheets().addAll(cssLoginManager, style);
     }
@@ -387,7 +413,6 @@ public class MenuOptionController {
     	for(TextField tf : textfield) {
     		
     		if(tf.getText().isEmpty()) {
-    			
     			tf.getStyleClass().add("jfx-text-field-error");
     			emptyInput = true;
     		}
@@ -411,61 +436,4 @@ public class MenuOptionController {
     	updatePasswordField.clear();
     	deleteWebsiteField.clear();
     }
-    
-    /**
-     * 
-     * 
-     */
-    
-    private class WebIconChangeListener implements ChangeListener<Boolean>{
-
-		@Override
-		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-			
-			if(newValue) {
-				webIconA.setImage(new Image("/images/blue_web.png"));
-				webIconR.setImage(new Image("/images/blue_web.png"));
-				webIconU.setImage(new Image("/images/blue_web.png"));
-				webIconD.setImage(new Image("/images/blue_web.png"));
-			}
-			else {
-				webIconA.setImage(new Image("/images/gray_web.png"));
-				webIconR.setImage(new Image("/images/gray_web.png"));
-				webIconU.setImage(new Image("/images/gray_web.png"));
-				webIconD.setImage(new Image("/images/gray_web.png"));
-			}
-		}
-    }
-    
-    private class UserIconChangeListener implements ChangeListener<Boolean>{
-
-		@Override
-		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-
-			if(newValue) {
-				userIconA.setImage(new Image("/images/blue_user.png"));
-				userIconU.setImage(new Image("/images/blue_user.png"));
-			}
-			else {
-				userIconA.setImage(new Image("/images/gray_user.png"));
-				userIconU.setImage(new Image("/images/gray_user.png"));
-			}
-		}	
-    }
-    
-    private class PasswordIconChangeListener implements ChangeListener<Boolean>{
-
-  		@Override
-  		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-
-  			if(newValue) {
-  				lockIconA.setImage(new Image("/images/blue_lock.png"));
-  				lockIconU.setImage(new Image("/images/blue_lock.png"));
-  			}
-  			else {
-  				lockIconA.setImage(new Image("/images/gray_lock.png"));
-  				lockIconU.setImage(new Image("/images/gray_lock.png"));
-  			}
-  		}	
-    }
-}
+ }

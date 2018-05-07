@@ -15,8 +15,6 @@ import com.jfoenix.controls.JFXTextField;
 
 import application.LoginManager;
 import application.model.Account;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -45,7 +43,7 @@ public class MainLoginController{
 	private Button select_SignIn, select_SignUp, forgotButton, closeButton, minButton;
 
 	@FXML
-	private JFXTextField signInUsername, signUpUsername, signUpEmail, forgotField;
+	private JFXTextField signInUsername, signUpUsername, signUpEmail, forgotUsername;
 
 	@FXML
 	private JFXPasswordField signInPassword, signUpPassword;
@@ -59,48 +57,66 @@ public class MainLoginController{
 	@FXML
 	private ImageView displayImage, userIcon, userIcon2, userIcon3, lockIcon, lockIcon2, emailIcon;
 	
-	private JFXSnackbar signInSnackbar, signUpSnackbar, forgotSnackbar;
-	private PasswordIconChangeListener passwordListener = new PasswordIconChangeListener();
-	private UserIconChangeListener userListener = new UserIconChangeListener();
-	private EmailIconChangeListener emailListener = new EmailIconChangeListener();
 	private ArrayList<TextField> textFieldList = new ArrayList<TextField>(3);
-	private Account userAccount;
 	private String cssLoginManager = this.getClass().getResource("LoginManager.css").toExternalForm();
 	private String cssGreenSnackbar = this.getClass().getResource("GreenSnackbar.css").toExternalForm();
 	private String cssRedSnackbar = this.getClass().getResource("RedSnackbar.css").toExternalForm();
-	private Scene scene;
-	private Image closeImage, minImage;
-	private double xOffset = 0;
-	private double yOffset = 0;
+	private Account userAccount;
+	
 	
 	public void initialize(){
 		
 		signInPane.toFront();
 		
-		closeImage = new Image("/images/close.png");
-		minImage = new Image("/images/min.png");
-		closeButton.setGraphic(new ImageView(closeImage));
-		minButton.setGraphic(new ImageView(minImage));
+		closeButton.setGraphic(new ImageView(new Image("/images/close.png")));
+		minButton.setGraphic(new ImageView(new Image("/images/min.png")));
 		
-		signInSnackbar = new JFXSnackbar(signInPane);
-		signUpSnackbar = new JFXSnackbar(signUpPane);
-		forgotSnackbar = new JFXSnackbar(forgotPane);
-	
 		textArea.setEditable(false);
     	textArea.setFocusTraversable(false);
     	textArea.setMouseTransparent(false);
     	
-    	signInUsername.focusedProperty().addListener(userListener);
-    	signUpUsername.focusedProperty().addListener(userListener);
-    	forgotField.focusedProperty().addListener(userListener);
+    	Image blueUser = new Image("/images/blue_user.png");
+    	Image grayUser = new Image("/images/gray_user.png");
     	
-    	signInPassword.focusedProperty().addListener(passwordListener);
-    	signUpPassword.focusedProperty().addListener(passwordListener);
+    	JFXTextField[] userFields = {signInUsername, signUpUsername, forgotUsername};
+    	ImageView[] userIcons = {userIcon, userIcon2, userIcon3};
     	
-    	signUpEmail.focusedProperty().addListener(emailListener);
+    	for(int i = 0; i < userFields.length; i++) {
+    		//variable used in inner class must be final
+    		final int j = i;
+    		userFields[i].focusedProperty().addListener((observable, oldValue, newValue) -> {
+    			if(newValue)
+    				userIcons[j].setImage(blueUser);
+    			else
+    				userIcons[j].setImage(grayUser);
+    		});
+    	}
     	
-    
-    
+    	Image blueLock = new Image("/images/blue_lock.png");
+    	Image grayLock = new Image("/images/gray_lock.png");
+    	
+    	JFXPasswordField[] passwordFields = {signInPassword, signUpPassword};
+    	ImageView[] lockIcons = {lockIcon, lockIcon2};
+    	
+    	for(int i = 0; i < passwordFields.length; i++) {
+    		final int j = i;
+    		passwordFields[i].focusedProperty().addListener((observable, oldValue, newValue) -> {
+    			if(newValue)
+    				lockIcons[j].setImage(blueLock);
+    			else
+    				lockIcons[j].setImage(grayLock);
+    		});
+    	}
+    	
+    	Image blueEmail = new Image("/images/blue_email.png");
+    	Image grayEmail = new Image("/images/gray_email.png");
+    	
+    	signUpEmail.focusedProperty().addListener((observable, oldValue, newValue) -> {
+    		if(newValue)
+    			emailIcon.setImage(blueEmail);
+    		else
+    			emailIcon.setImage(grayEmail);
+    	});
     }
     
 	/**
@@ -120,7 +136,7 @@ public class MainLoginController{
     	
     	if(event.getSource() == forgotButton) {
     		forgotPane.toFront();
-    		forgotField.requestFocus();
+    		forgotUsername.requestFocus();
     	}
     	
     	if(event.getSource() == select_SignUp) {
@@ -154,7 +170,8 @@ public class MainLoginController{
     @FXML
     public void signInListener(ActionEvent event) throws IOException {
     	
-    	getScene();
+    	JFXSnackbar signInSnackbar = new JFXSnackbar(signInPane);
+    	
     	textFieldList.clear();
     	textFieldList.add(signInUsername);
     	textFieldList.add(signInPassword);
@@ -179,7 +196,8 @@ public class MainLoginController{
     @FXML
     public void signUpListener(ActionEvent event) throws IOException {
     	
-    	getScene();
+    	JFXSnackbar signUpSnackbar = new JFXSnackbar(signUpPane);
+    	
     	textFieldList.clear();
     	textFieldList.add(signUpUsername);
     	textFieldList.add(signUpPassword);
@@ -203,16 +221,18 @@ public class MainLoginController{
      * 
      */
     
-    public void retrieveListener(){
+    @FXML
+    public void forgotListener(){
     	 
-    	getScene();
+    	JFXSnackbar forgotSnackbar = new JFXSnackbar(forgotPane);
+    	
     	textFieldList.clear();
-    	textFieldList.add(forgotField);
+    	textFieldList.add(forgotUsername);
     	
     	if(!checkForEmptyInput(textFieldList)) {
     		userAccount = new Account();
     		//see if username exists, then proceed to send email
-    		if(userAccount.findUsername(forgotField.getText())) {
+    		if(userAccount.findUsername(forgotUsername.getText())) {
     			userAccount.sendEmail();
     			setSnackbarStyle(cssGreenSnackbar);
     			forgotSnackbar.enqueue(new SnackbarEvent("Email Sent!"));
@@ -229,6 +249,9 @@ public class MainLoginController{
      * 
      */
     
+    private double startX = 0;
+    private double startY = 0;
+    
     private void switchScene(ActionEvent event) throws IOException{
     
     	Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -241,8 +264,8 @@ public class MainLoginController{
 
 			@Override
 			public void handle(MouseEvent event) {
-				xOffset = currentStage.getX() - event.getScreenX();
-				yOffset = currentStage.getY() - event.getScreenY();
+				 startX = currentStage.getX() - event.getScreenX();
+				 startY = currentStage.getY() - event.getScreenY();
 			}
 		});
 		
@@ -250,8 +273,8 @@ public class MainLoginController{
 			
 			@Override
 			public void handle(MouseEvent event) {
-				currentStage.setX(event.getScreenX() + xOffset);
-				currentStage.setY(event.getScreenY() + yOffset);
+				currentStage.setX(event.getScreenX() +  startX);
+				currentStage.setY(event.getScreenY() + startY);
 			}
 		});
 		
@@ -261,23 +284,16 @@ public class MainLoginController{
     	MenuOptionController controller = loader.getController();
     	controller.init_Username(userAccount);
     	
-		
-		currentStage.setScene(menuScene);
+    	currentStage.setScene(menuScene);
 		currentStage.show();
     }
     
     /**
-     *  getScene() - finds current scene root node is on and stores it to global scene variable
-     *  
-     *  setSnackbarStyle() - first clear any stylesheets that have been previously added to scene
-     *  				   - add default css along with red or green snackbar css @param style
+     * @param style - set the style of the snackbar with the red or green css file
      */
     
-    private void getScene() {
-    	scene = rootAnchor.getScene();
-    }
-    
     private void setSnackbarStyle(String style) {
+    	Scene scene = rootAnchor.getScene();
     	scene.getStylesheets().clear();
     	scene.getStylesheets().addAll(cssLoginManager, style);
     }
@@ -312,59 +328,6 @@ public class MainLoginController{
     	signUpUsername.clear();
     	signUpPassword.clear();
     	signUpEmail.clear();
-    	forgotField.clear();
+    	forgotUsername.clear();
     }
-    
-    /**
-     * 
-     * 
-     */
-    
-    private class UserIconChangeListener implements ChangeListener<Boolean>{
-    	
-		@Override
-		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-			//System.out.println("This was fired " + observable);
-			if(newValue) {
-				userIcon.setImage(new Image("/images/blue_user.png"));
-				userIcon2.setImage(new Image("/images/blue_user.png"));
-				userIcon3.setImage(new Image("/images/blue_user.png"));
-			}
-			else {
-				userIcon.setImage(new Image("/images/gray_user.png"));
-				userIcon2.setImage(new Image("/images/gray_user.png"));
-				userIcon3.setImage(new Image("/images/gray_user.png"));
-			}
-		}	
-    }
-    
-    private class PasswordIconChangeListener implements ChangeListener<Boolean>{
-
-		@Override
-		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-
-			if(newValue) {
-				lockIcon.setImage(new Image("/images/blue_lock.png"));
-				lockIcon2.setImage(new Image("/images/blue_lock.png"));
-			}
-			else {
-				lockIcon.setImage(new Image("/images/gray_lock.png"));
-				lockIcon2.setImage(new Image("/images/gray_lock.png"));
-			}
-		}	
-    }
-    
-    private class EmailIconChangeListener implements ChangeListener<Boolean>{
-
- 		@Override
- 		public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-
- 			if(newValue)
- 				emailIcon.setImage(new Image("/images/blue_email.png"));
- 			else
- 				emailIcon.setImage(new Image("/images/gray_email.png"));
- 		}
-    }
-
-	
 }
