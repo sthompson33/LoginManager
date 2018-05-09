@@ -2,7 +2,7 @@
  * 
  */
 
-package application.view;
+package application.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,9 +74,9 @@ public class MenuOptionController {
     private JFXCheckBox usernameCheckBox, passwordCheckBox;
     
     private ArrayList<TextField> textFieldList = new ArrayList<TextField>(3);
-    private String cssLoginManager = this.getClass().getResource("LoginManager.css").toExternalForm();
-	private String cssGreenSnackbar = this.getClass().getResource("GreenSnackbar.css").toExternalForm();
-	private String cssRedSnackbar = this.getClass().getResource("RedSnackbar.css").toExternalForm();
+    private String cssLoginManager = this.getClass().getResource("../view/LoginManager.css").toExternalForm();
+	private String cssGreenSnackbar = this.getClass().getResource("../view/GreenSnackbar.css").toExternalForm();
+	private String cssRedSnackbar = this.getClass().getResource("../view/RedSnackbar.css").toExternalForm();
     
     public void initialize(){
     	
@@ -85,24 +85,18 @@ public class MenuOptionController {
     	closeButton.setGraphic(new ImageView(new Image("/images/close.png")));
 		minButton.setGraphic(new ImageView(new Image("/images/min.png")));
 		
-		Image blueWeb = new Image("/images/blue_web.png");
-		Image grayWeb = new Image("/images/gray_web.png");
-    	
-    	JFXTextField[] webFields = {addWebsiteField, retrieveWebsiteField, updateWebsiteField, deleteWebsiteField};
+		JFXTextField[] webFields = {addWebsiteField, retrieveWebsiteField, updateWebsiteField, deleteWebsiteField};
     	ImageView[] webIcons = {webIconA, webIconR, webIconU, webIconD};
     	
     	for(int i = 0; i < webFields.length; i++) {
     		final int j = i;
     		webFields[i].focusedProperty().addListener((observable, oldValue, newValue) ->{
     			if(newValue)
-    				webIcons[j].setImage(blueWeb);
+    				webIcons[j].setImage(new Image("/images/blue_web.png"));
     			else
-    				webIcons[j].setImage(grayWeb);
+    				webIcons[j].setImage(new Image("/images/gray_web.png"));
     		});
     	}
-    	
-    	Image blueUser = new Image("/images/blue_user.png");
-    	Image grayUser = new Image("/images/gray_user.png");
     	
     	JFXTextField[] userFields = {addUsernameField, updateUsernameField};
     	ImageView[] userIcons = {userIconA, userIconU};
@@ -111,14 +105,11 @@ public class MenuOptionController {
     		final int j = i;
     		userFields[i].focusedProperty().addListener((observable, oldValue, newValue) ->{
     			if(newValue)
-    				userIcons[j].setImage(blueUser);
+    				userIcons[j].setImage(new Image("/images/blue_user.png"));
     			else
-    				userIcons[j].setImage(grayUser);
+    				userIcons[j].setImage(new Image("/images/gray_user.png"));
     		});
     	}
-    	
-    	Image blueLock = new Image("/images/blue_lock.png");
-    	Image grayLock = new Image("/images/gray_lock.png");
     	
     	JFXPasswordField[] passwordFields = {addPasswordField, updatePasswordField};
     	ImageView[] lockIcons = {lockIconA, lockIconU};
@@ -127,9 +118,9 @@ public class MenuOptionController {
     		final int j = i;
     		passwordFields[i].focusedProperty().addListener((observable, oldValue, newValue) -> {
     			if(newValue)
-    				lockIcons[j].setImage(blueLock);
+    				lockIcons[j].setImage(new Image("/images/blue_lock.png"));
     			else
-    				lockIcons[j].setImage(grayLock);
+    				lockIcons[j].setImage(new Image("/images/gray_lock.png"));
     		});
     	}
     }
@@ -365,7 +356,7 @@ public class MenuOptionController {
     	
     	Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
     	
-    	AnchorPane root = FXMLLoader.load(getClass().getResource("MainLogin.fxml"));
+    	AnchorPane root = FXMLLoader.load(getClass().getResource("../view/MainLogin.fxml"));
     	
     	root.setOnMousePressed(new EventHandler<MouseEvent>() {
 

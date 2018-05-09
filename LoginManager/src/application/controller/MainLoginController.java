@@ -2,7 +2,7 @@
  * 
  */
 
-package application.view;
+package application.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,9 +58,9 @@ public class MainLoginController{
 	private ImageView displayImage, userIcon, userIcon2, userIcon3, lockIcon, lockIcon2, emailIcon;
 	
 	private ArrayList<TextField> textFieldList = new ArrayList<TextField>(3);
-	private String cssLoginManager = this.getClass().getResource("LoginManager.css").toExternalForm();
-	private String cssGreenSnackbar = this.getClass().getResource("GreenSnackbar.css").toExternalForm();
-	private String cssRedSnackbar = this.getClass().getResource("RedSnackbar.css").toExternalForm();
+	private String cssLoginManager = this.getClass().getResource("../view/LoginManager.css").toExternalForm();
+	private String cssGreenSnackbar = this.getClass().getResource("../view/GreenSnackbar.css").toExternalForm();
+	private String cssRedSnackbar = this.getClass().getResource("../view/RedSnackbar.css").toExternalForm();
 	private Account userAccount;
 	
 	
@@ -75,9 +75,6 @@ public class MainLoginController{
     	textArea.setFocusTraversable(false);
     	textArea.setMouseTransparent(false);
     	
-    	Image blueUser = new Image("/images/blue_user.png");
-    	Image grayUser = new Image("/images/gray_user.png");
-    	
     	JFXTextField[] userFields = {signInUsername, signUpUsername, forgotUsername};
     	ImageView[] userIcons = {userIcon, userIcon2, userIcon3};
     	
@@ -86,14 +83,11 @@ public class MainLoginController{
     		final int j = i;
     		userFields[i].focusedProperty().addListener((observable, oldValue, newValue) -> {
     			if(newValue)
-    				userIcons[j].setImage(blueUser);
+    				userIcons[j].setImage(new Image("/images/blue_user.png"));
     			else
-    				userIcons[j].setImage(grayUser);
+    				userIcons[j].setImage(new Image("/images/gray_user.png"));
     		});
     	}
-    	
-    	Image blueLock = new Image("/images/blue_lock.png");
-    	Image grayLock = new Image("/images/gray_lock.png");
     	
     	JFXPasswordField[] passwordFields = {signInPassword, signUpPassword};
     	ImageView[] lockIcons = {lockIcon, lockIcon2};
@@ -102,20 +96,17 @@ public class MainLoginController{
     		final int j = i;
     		passwordFields[i].focusedProperty().addListener((observable, oldValue, newValue) -> {
     			if(newValue)
-    				lockIcons[j].setImage(blueLock);
+    				lockIcons[j].setImage(new Image("/images/blue_lock.png"));
     			else
-    				lockIcons[j].setImage(grayLock);
+    				lockIcons[j].setImage(new Image("/images/gray_lock.png"));
     		});
     	}
     	
-    	Image blueEmail = new Image("/images/blue_email.png");
-    	Image grayEmail = new Image("/images/gray_email.png");
-    	
     	signUpEmail.focusedProperty().addListener((observable, oldValue, newValue) -> {
     		if(newValue)
-    			emailIcon.setImage(blueEmail);
+    			emailIcon.setImage(new Image("/images/blue_email.png"));
     		else
-    			emailIcon.setImage(grayEmail);
+    			emailIcon.setImage(new Image("/images/gray_email.png"));
     	});
     }
     
@@ -257,7 +248,7 @@ public class MainLoginController{
     	Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
     	
     	FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(getClass().getResource("MenuOption.fxml"));
+    	loader.setLocation(getClass().getResource("../view/MenuOption.fxml"));
     	AnchorPane root = loader.load();
     
     	root.setOnMousePressed(new EventHandler<MouseEvent>() {
