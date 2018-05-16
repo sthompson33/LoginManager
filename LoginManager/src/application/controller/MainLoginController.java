@@ -1,5 +1,6 @@
 /**
- * 
+ * @author Stephen
+ *
  */
 
 package application.controller;
@@ -15,8 +16,8 @@ import com.jfoenix.controls.JFXTextField;
 
 import application.LoginManager;
 import application.model.Account;
+
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -26,12 +27,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class MainLoginController{
+public class MainLoginController extends ControllerUtilities{
 	
 	@FXML
 	private AnchorPane rootAnchor;
@@ -58,11 +58,7 @@ public class MainLoginController{
 	private ImageView displayImage, userIcon, userIcon2, userIcon3, lockIcon, lockIcon2, emailIcon;
 	
 	private ArrayList<TextField> textFieldList = new ArrayList<TextField>(3);
-	private String cssLoginManager = this.getClass().getResource("../view/LoginManager.css").toExternalForm();
-	private String cssGreenSnackbar = this.getClass().getResource("../view/GreenSnackbar.css").toExternalForm();
-	private String cssRedSnackbar = this.getClass().getResource("../view/RedSnackbar.css").toExternalForm();
 	private Account userAccount;
-	
 	
 	public void initialize(){
 		
@@ -109,40 +105,13 @@ public class MainLoginController{
     			emailIcon.setImage(new Image("/images/gray_email.png"));
     	});
     }
-    
+
 	/**
      * 
      * 
      */
-    
-    @FXML
-    public void switchPaneListener(ActionEvent event) {
-    	
-    	clearFields();
-    
-    	if(event.getSource() == select_SignIn) {
-    		signInPane.toFront();
-    		signInUsername.requestFocus();
-    	}
-    	
-    	if(event.getSource() == forgotButton) {
-    		forgotPane.toFront();
-    		forgotUsername.requestFocus();
-    	}
-    	
-    	if(event.getSource() == select_SignUp) {
-    		signUpPane.toFront();
-    		signUpUsername.requestFocus();
-    	}
-    	
-    	if(event.getSource() == backButton) {
-    		signInPane.toFront();
-    		signInUsername.requestFocus();
-    	}
-    }
-    
-    @FXML
-    public void titleButtonListener(ActionEvent event) {
+	
+	public void titleButtonListener(ActionEvent event) {
     	
     	if(event.getSource() == closeButton) {
     		System.exit(0);
@@ -152,7 +121,7 @@ public class MainLoginController{
     		LoginManager.getStage().setIconified(true);
     	}
     }
-    
+	
     /**
      * 
      * 
@@ -173,7 +142,7 @@ public class MainLoginController{
     			switchScene(event);
     		}
     		else {
-    			setSnackbarStyle(cssRedSnackbar);
+    			setSnackbarStyle(CSS_RED_SNACKBAR, rootAnchor);
     			signInSnackbar.enqueue(new SnackbarEvent("Incorrect Username or Password"));
     		}
     	}
@@ -196,13 +165,20 @@ public class MainLoginController{
     	
     	if(!checkForEmptyInput(textFieldList)) {
     		userAccount = new Account(signUpUsername.getText(), signUpPassword.getText(), signUpEmail.getText());
-    		if(!userAccount.findAccount()) {
-    			userAccount.createAccount();
-    			switchScene(event);
+    		if(userAccount.verifyEmail(signUpEmail.getText())) {
+    			if(!userAccount.findAccount()) {
+    				userAccount.createAccount();
+    				switchScene(event);
+    			}
+    			else {
+    				setSnackbarStyle(CSS_RED_SNACKBAR, rootAnchor);
+    				signUpSnackbar.enqueue(new SnackbarEvent("Account Already Exists"));
+    			}
     		}
     		else {
-    			setSnackbarStyle(cssRedSnackbar);
-    			signUpSnackbar.enqueue(new SnackbarEvent("Account Already Exists"));
+    			setSnackbarStyle(CSS_RED_SNACKBAR, rootAnchor);
+    			signUpSnackbar.enqueue(new SnackbarEvent("Please Use a Gmail Address"));
+    			signUpEmail.requestFocus();
     		}
     	}
     }
@@ -225,11 +201,11 @@ public class MainLoginController{
     		//see if username exists, then proceed to send email
     		if(userAccount.findUsername(forgotUsername.getText())) {
     			userAccount.sendEmail();
-    			setSnackbarStyle(cssGreenSnackbar);
+    			setSnackbarStyle(CSS_GREEN_SNACKBAR, rootAnchor);
     			forgotSnackbar.enqueue(new SnackbarEvent("Email Sent!"));
     		}
     		else {
-	    		setSnackbarStyle(cssRedSnackbar);
+	    		setSnackbarStyle(CSS_RED_SNACKBAR, rootAnchor);
     			forgotSnackbar.enqueue(new SnackbarEvent("Username Not Found"));
     		}
     	}
@@ -242,36 +218,29 @@ public class MainLoginController{
     
     private double startX = 0;
     private double startY = 0;
-    
-    private void switchScene(ActionEvent event) throws IOException{
-    
-    	Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+    @Override
+    public void switchScene(ActionEvent event) throws IOException{
+       
+        Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
     	
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource("../view/MenuOption.fxml"));
     	AnchorPane root = loader.load();
     
-    	root.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				 startX = currentStage.getX() - event.getScreenX();
-				 startY = currentStage.getY() - event.getScreenY();
-			}
-		});
-		
-		root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			
-			@Override
-			public void handle(MouseEvent event) {
-				currentStage.setX(event.getScreenX() +  startX);
-				currentStage.setY(event.getScreenY() + startY);
-			}
-		});
+    	root.setOnMousePressed((e) -> {
+    		startX = currentStage.getX() - e.getScreenX();
+    		startY = currentStage.getY() - e.getScreenY();
+    	});
+    	
+    	root.setOnMouseDragged((e) -> {
+    		currentStage.setX(e.getScreenX() + startX);
+    		currentStage.setY(e.getScreenY() + startY);
+    	});
 		
 		Scene menuScene = new Scene(root);
     	
-    	//access new controller and pass account object to it
+    	//access MenuOptionController and pass current Account object 
     	MenuOptionController controller = loader.getController();
     	controller.init_Username(userAccount);
     	
@@ -279,46 +248,39 @@ public class MainLoginController{
 		currentStage.show();
     }
     
-    /**
-     * @param style - set the style of the snackbar with the red or green css file
-     */
+    @Override
+	public void switchPaneListener(ActionEvent event) {
+		
+		clearFields();
     
-    private void setSnackbarStyle(String style) {
-    	Scene scene = rootAnchor.getScene();
-    	scene.getStylesheets().clear();
-    	scene.getStylesheets().addAll(cssLoginManager, style);
-    }
-    
-    /**
-     * 
-     * 
-     */
-    
-    private boolean checkForEmptyInput(ArrayList<TextField> textfield) {
-    	
-    	boolean emptyInput = false;
-    	
-    	for(TextField tf : textfield) {
-    		
-    		if(tf.getText().isEmpty()) {
-    			tf.getStyleClass().add("jfx-text-field-error");
-    			emptyInput = true;
-    		}
-    		else {
-    			tf.getStyleClass().clear();
-    			tf.getStyleClass().addAll("text-field", "text-input", "jfx-text-field", "password-field", "jfx-password-field");
-    		}
+    	if(event.getSource() == select_SignIn) {
+    		signInPane.toFront();
+    		signInUsername.requestFocus();
     	}
     	
-    	return emptyInput;
-    }
-    
-    private void clearFields() {
-    	signInUsername.clear();
+    	if(event.getSource() == forgotButton) {
+    		forgotPane.toFront();
+    		forgotUsername.requestFocus();
+    	}
+    	
+    	if(event.getSource() == select_SignUp) {
+    		signUpPane.toFront();
+    		signUpUsername.requestFocus();
+    	}
+    	
+    	if(event.getSource() == backButton) {
+    		signInPane.toFront();
+    		signInUsername.requestFocus();
+    	}
+	}
+
+	@Override
+	public void clearFields() {
+		signInUsername.clear();
     	signInPassword.clear();
     	signUpUsername.clear();
     	signUpPassword.clear();
     	signUpEmail.clear();
     	forgotUsername.clear();
-    }
+	}
 }

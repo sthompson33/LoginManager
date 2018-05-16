@@ -1,6 +1,8 @@
 /**
- * 
+ * @author Stephen
+ *
  */
+
 package application.model;
 
 import java.io.File;
@@ -13,10 +15,6 @@ import java.util.Scanner;
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.util.text.BasicTextEncryptor;
 
-/**
- * @author Stephen
- *
- */
 public class LoginInformation {
 	
 	private static String fileName, website, username, password;

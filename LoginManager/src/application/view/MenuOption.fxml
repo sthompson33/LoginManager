@@ -96,7 +96,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="signOutButton" focusTraversable="false" onAction="#switchSceneListener" prefWidth="150.0" style="-fx-background-color: #ffffff;" text="Sign Out" textFill="#336699">
+            <JFXButton fx:id="signOutButton" focusTraversable="false" onAction="#switchScene" prefWidth="150.0" style="-fx-background-color: #ffffff;" text="Sign Out" textFill="#336699">
                <font>
                   <Font size="20.0" />
                </font>

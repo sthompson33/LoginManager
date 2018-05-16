@@ -1,5 +1,6 @@
 /**
- * 
+ * @author Stephen
+ *
  */
 
 package application.controller;
@@ -17,8 +18,8 @@ import com.jfoenix.controls.JFXTextField;
 import application.LoginManager;
 import application.model.Account;
 import application.model.LoginInformation;
+
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -28,16 +29,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MenuOptionController {
+public class MenuOptionController extends ControllerUtilities {
 
-
-    @FXML
+	@FXML
     private AnchorPane rootAnchor;
 
     @FXML
@@ -74,10 +73,7 @@ public class MenuOptionController {
     private JFXCheckBox usernameCheckBox, passwordCheckBox;
     
     private ArrayList<TextField> textFieldList = new ArrayList<TextField>(3);
-    private String cssLoginManager = this.getClass().getResource("../view/LoginManager.css").toExternalForm();
-	private String cssGreenSnackbar = this.getClass().getResource("../view/GreenSnackbar.css").toExternalForm();
-	private String cssRedSnackbar = this.getClass().getResource("../view/RedSnackbar.css").toExternalForm();
-    
+ 
     public void initialize(){
     	
     	displayPane.toFront();
@@ -90,7 +86,7 @@ public class MenuOptionController {
     	
     	for(int i = 0; i < webFields.length; i++) {
     		final int j = i;
-    		webFields[i].focusedProperty().addListener((observable, oldValue, newValue) ->{
+    		webFields[i].focusedProperty().addListener((observable, oldValue, newValue) -> {
     			if(newValue)
     				webIcons[j].setImage(new Image("/images/blue_web.png"));
     			else
@@ -103,7 +99,7 @@ public class MenuOptionController {
     	
     	for(int i = 0; i < userFields.length; i++) {
     		final int j = i;
-    		userFields[i].focusedProperty().addListener((observable, oldValue, newValue) ->{
+    		userFields[i].focusedProperty().addListener((observable, oldValue, newValue) -> {
     			if(newValue)
     				userIcons[j].setImage(new Image("/images/blue_user.png"));
     			else
@@ -133,37 +129,6 @@ public class MenuOptionController {
     public void init_Username(Account account) {
     	
     	LoginInformation.setFileName(account.getUsername());
-    }
-    
-    /**
-     * 
-     * 
-     */
-    
-    @FXML
-    public void switchPaneListener(ActionEvent event){
-    	
-    	clearFields();
-    	
-    	if(event.getSource() == addNewMenuButton) {
-    		addNewPane.toFront();
-    		addWebsiteField.requestFocus();
-    	}
-    	
-    	if(event.getSource() == retrieveMenuButton) {
-    		retrievePane.toFront();
-    		retrieveWebsiteField.requestFocus();
-    	}
-    	
-    	if(event.getSource() == updateMenuButton) {
-    		updatePane.toFront();
-    		updateWebsiteField.requestFocus();
-    	}
-    	
-    	if(event.getSource() == deleteMenuButton) {
-    		deletePane.toFront();
-    		deleteWebsiteField.requestFocus();
-    	}
     }
     
     /**
@@ -202,13 +167,14 @@ public class MenuOptionController {
     		if(LoginInformation.findWebsite(addWebsiteField.getText())) {
     			clearFields();
         		addWebsiteField.requestFocus();
-    			setSnackbarStyle(cssRedSnackbar);
+    			setSnackbarStyle(CSS_RED_SNACKBAR, rootAnchor);
     			addNewSnackbar.enqueue(new SnackbarEvent("Website Already Exists"));
-    		}else {
+    		}
+    		else {
     			LoginInformation.addNewLogin(addWebsiteField.getText(), addUsernameField.getText(), addPasswordField.getText());
         		clearFields();
         		addWebsiteField.requestFocus();
-        		setSnackbarStyle(cssGreenSnackbar);
+        		setSnackbarStyle(CSS_GREEN_SNACKBAR, rootAnchor);
         		addNewSnackbar.enqueue(new SnackbarEvent("Information Added Successfully!"));
     		}
     	}
@@ -238,7 +204,7 @@ public class MenuOptionController {
     			retrieveWebsiteField.requestFocus();
     			usernameResult.setText("");
     			passwordResult.setText("");
-    			setSnackbarStyle(cssRedSnackbar);
+    			setSnackbarStyle(CSS_RED_SNACKBAR, rootAnchor);
     			retrieveSnackbar.enqueue(new SnackbarEvent("Website Not Found"));
     		}
     	}
@@ -265,7 +231,7 @@ public class MenuOptionController {
     	
     	if(!checkForEmptyInput(textFieldList)) {
     		if(!usernameCheckBox.isSelected() && !passwordCheckBox.isSelected()) {
-        		setSnackbarStyle(cssRedSnackbar);
+        		setSnackbarStyle(CSS_RED_SNACKBAR, rootAnchor);
         		updateSnackbar.enqueue(new SnackbarEvent("Must Select a Username or Password to Update"));
         	}
     		else if(LoginInformation.findWebsite(updateWebsiteField.getText())) {
@@ -278,13 +244,13 @@ public class MenuOptionController {
     			updatePasswordField.setVisible(false);
     			lockIconU.setVisible(false);
     			updateWebsiteField.requestFocus();
-        		setSnackbarStyle(cssGreenSnackbar);
+        		setSnackbarStyle(CSS_GREEN_SNACKBAR, rootAnchor);
         		updateSnackbar.enqueue(new SnackbarEvent("Information Updated Successfully!"));
     		}
     		else {
     			clearFields();
     			updateWebsiteField.requestFocus();
-    			setSnackbarStyle(cssRedSnackbar);
+    			setSnackbarStyle(CSS_RED_SNACKBAR, rootAnchor);
         		updateSnackbar.enqueue(new SnackbarEvent("Website Not Found"));
     		}
     	}
@@ -330,13 +296,13 @@ public class MenuOptionController {
     			LoginInformation.deleteLogin();
         		clearFields();
         		deleteWebsiteField.requestFocus();
-        		setSnackbarStyle(cssGreenSnackbar);
+        		setSnackbarStyle(CSS_GREEN_SNACKBAR, rootAnchor);
         		deleteSnackbar.enqueue(new SnackbarEvent("Information Deleted Successfully!"));
     		}
     		else {
     			clearFields();
         		deleteWebsiteField.requestFocus();
-    			setSnackbarStyle(cssRedSnackbar);
+    			setSnackbarStyle(CSS_RED_SNACKBAR, rootAnchor);
     			deleteSnackbar.enqueue(new SnackbarEvent("Website Not Found"));
     		}
     		
@@ -351,72 +317,58 @@ public class MenuOptionController {
     private double startX = 0;
     private double startY = 0;
     
-    @FXML
-    public void switchSceneListener(ActionEvent event) throws IOException{
+    @Override
+    public void switchScene(ActionEvent event) throws IOException{
     	
     	Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
     	
     	AnchorPane root = FXMLLoader.load(getClass().getResource("../view/MainLogin.fxml"));
     	
-    	root.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				startX = currentStage.getX() - event.getScreenX();
-				startY = currentStage.getY() - event.getScreenY();
-			}
-		});
-		
-		root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			
-			@Override
-			public void handle(MouseEvent event) {
-				currentStage.setX(event.getScreenX() + startX);
-				currentStage.setY(event.getScreenY() + startY);
-			}
-		});
+    	root.setOnMousePressed((e) -> {
+    		startX = currentStage.getX() - e.getScreenX();
+    		startY = currentStage.getY() - e.getScreenY();
+    	});
     	
-		Scene mainScene = new Scene(root);
+    	root.setOnMouseDragged((e) -> {
+    		currentStage.setX(e.getScreenX() + startX);
+    		currentStage.setY(e.getScreenY() + startY);
+    	});
+    	
+    	Scene mainScene = new Scene(root);
 		
 		currentStage.setScene(mainScene);
 		currentStage.show();
     }
-    
-    /**
-     * @param style - set the style of the snackbar with the red or green css file
-     */
-    
-    private void setSnackbarStyle(String style) {
-    	Scene scene = rootAnchor.getScene();
-    	scene.getStylesheets().clear();
-    	scene.getStylesheets().addAll(cssLoginManager, style);
-    }
-    
-    /**
-     * 
-     * 
-     */
-    
-    private boolean checkForEmptyInput(ArrayList<TextField> textfield) {
+
+	@Override
+	public void switchPaneListener(ActionEvent event) {
+		
+		clearFields();
     	
-    	boolean emptyInput = false;
-    	
-    	for(TextField tf : textfield) {
-    		
-    		if(tf.getText().isEmpty()) {
-    			tf.getStyleClass().add("jfx-text-field-error");
-    			emptyInput = true;
-    		}
-    		else {
-    			tf.getStyleClass().clear();
-    			tf.getStyleClass().addAll("text-field", "text-input", "jfx-text-field", "password-field", "jfx-password-field");    		}
+    	if(event.getSource() == addNewMenuButton) {
+    		addNewPane.toFront();
+    		addWebsiteField.requestFocus();
     	}
     	
-    	return emptyInput;
-    }
-    
-    private void clearFields() {
-    	addWebsiteField.clear();
+    	if(event.getSource() == retrieveMenuButton) {
+    		retrievePane.toFront();
+    		retrieveWebsiteField.requestFocus();
+    	}
+    	
+    	if(event.getSource() == updateMenuButton) {
+    		updatePane.toFront();
+    		updateWebsiteField.requestFocus();
+    	}
+    	
+    	if(event.getSource() == deleteMenuButton) {
+    		deletePane.toFront();
+    		deleteWebsiteField.requestFocus();
+    	}
+	}
+
+	@Override
+	public void clearFields() {
+	 	addWebsiteField.clear();
     	addUsernameField.clear();
     	addPasswordField.clear();
     	retrieveWebsiteField.clear();
@@ -426,5 +378,5 @@ public class MenuOptionController {
     	updateUsernameField.clear();
     	updatePasswordField.clear();
     	deleteWebsiteField.clear();
-    }
- }
+	}
+}

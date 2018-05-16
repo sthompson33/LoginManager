@@ -1,6 +1,8 @@
 /**
- * 
+ * @author Stephen
+ *
  */
+
 package application.model;
 
 import java.io.File;
@@ -21,11 +23,6 @@ import javax.mail.internet.MimeMessage;
 
 import org.jasypt.exceptions.AlreadyInitializedException;
 import org.jasypt.util.text.BasicTextEncryptor;
-
-/**
- * @author Stephen
- *
- */
 
 public class Account {
 
@@ -185,6 +182,14 @@ public class Account {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public boolean verifyEmail(String emailAttempt) {
+		int atIndex = emailAttempt.indexOf("@");
+		if(emailAttempt.substring(atIndex + 1, emailAttempt.length() - 4).equals("gmail"))
+			return true;
+		else
+			return false;
 	}
 	
 	/**
