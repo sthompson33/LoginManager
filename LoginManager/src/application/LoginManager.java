@@ -1,6 +1,7 @@
 /**
- * @author Stephen
+ * @author Stephen Thompson
  *
+ * Initial start of LoginManager application 
  */
 
 package application;
@@ -60,7 +61,6 @@ public class LoginManager extends Application {
 	/**
 	 * @param args
 	 */
-	
 	public static void main(String[] args){
 		launch(args);
 	}

@@ -1,6 +1,14 @@
 /**
- * @author Stephen
+ * @author Stephen Thompson
+ * 
+ * <pre> The Account class contains methods that allow information for application such as
+ * username, password and email to be stored on file in encrypted format.
+ * Such methods include creating a new account, searching for an existing account or username.
+ * Also a method for sending an email incase of forgotten password.
  *
+ * The jasypt library has been imported for encryption purposes. Any information to be written to a file 
+ * will be encrypted first with the BasicTextEncryptor class. Same class will be used for decrypting when 
+ * reading from a file.</pre>
  */
 
 package application.model;
@@ -29,24 +37,7 @@ public class Account {
 	private String username, password, email;
 	private BasicTextEncryptor code = new BasicTextEncryptor();
 	
-	
-	public Account() {
-		
-	}
-	
-	public Account(String username, String password) {
-	
-		setUsername(username);
-		setPassword(password);
-	}
-	
-	public Account(String username, String password, String email) {
-		
-		setUsername(username);
-		setPassword(password);
-		setEmail(email);
-	}
-	
+	//setters
 	public void setUsername(String username) {
 		
 		this.username = username;
@@ -62,6 +53,7 @@ public class Account {
 		this.email = email;
 	}
 	
+	//getters
 	public String getUsername() {
 		
 		return username;
@@ -77,86 +69,19 @@ public class Account {
 		return email;
 	}
 	
-	
 	/**
-	 * @return
-	 */
-	
-	public boolean findAccount() {
-		  
-		boolean found = false;
-		
-		try {
-			code.setPassword("loginmanager");
-		}
-		catch(AlreadyInitializedException e) {
-			
-		}
-		
-		try {
-			Scanner scan = new Scanner(new File("accounts.txt"));
-			while(scan.hasNext()) {
-				String user = code.decrypt(scan.nextLine());
-				String pass = code.decrypt(scan.nextLine());
-				scan.nextLine(); //read next line not used here
-				
-				if(user.equals(username) && pass.equals(password)) {
-					found = true;
-					break;
-				}
-			}
-			scan.close();
-		}
-		catch(FileNotFoundException e) {
-			//e.printStackTrace();
-		}
-		
-		return found;
-	}
-	
-	/**
-	 * @param user
-	 * @return
-	 */
-	
-	public boolean findUsername(String user) {
-		
-		boolean found = false;
-		
-		try {
-			code.setPassword("loginmanager");
-		}
-		catch(AlreadyInitializedException e) {
-			
-		}
-		
-		try {
-			Scanner scan = new Scanner(new File("accounts.txt"));
-			while(scan.hasNext()) {
-				username = code.decrypt(scan.nextLine());
-				password = code.decrypt(scan.nextLine());
-				email = code.decrypt(scan.nextLine());
-				
-				if(user.equals(username)) {
-					found = true;
-					break;
-				}
-			}
-			scan.close();
-		}
-		catch(FileNotFoundException e) {
-			//e.printStackTrace();
-		}
-		
-		return found;
-	}
-	
-
-	/**
+	 * <pre> Adds a new username, password and email to the end of the accounts.txt file, creating
+	 * a new Account. Should use findAccount method first to be sure no duplicate information is being added</pre>
 	 * 
+	 * @param username - new username to be added
+	 * @param password - new password to be added
+	 * @param email - new email to be added
+	 * @throws NullPointerException - thrown if any of the parameters are null
 	 */
-	
-	public void createAccount(){
+	public void createAccount(String username, String password, String email) throws NullPointerException{
+		
+		if(username == null || password == null || email == null) 
+			throw new NullPointerException("one or more class fields is null");
 		
 		try {
 			code.setPassword("loginmanager");
@@ -181,22 +106,122 @@ public class Account {
 		catch(IOException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
-	public boolean verifyEmail(String emailAttempt) {
-		int atIndex = emailAttempt.indexOf("@");
-		if(emailAttempt.substring(atIndex + 1, emailAttempt.length() - 4).equals("gmail"))
+	/**
+	 * <pre> Looks to see if username exist on file. For a match to be found, username has to be equal to the 
+	 * username being read from file. Temporary Strings are used to hold the values when reading through the file. 
+	 * The class fields will be set to these values if a match is found. This prevents the last username, password and email 
+	 * on file to be stored in class fields if a match was not found.</pre>
+	 * 
+	 * @return true if username found on file, false if not
+	 */
+	public boolean findUsername(String username) {
+		
+		boolean found = false;
+		
+		try {
+			code.setPassword("loginmanager");
+		}
+		catch(AlreadyInitializedException e) {
+			
+		}
+		
+		try {
+			Scanner scan = new Scanner(new File("accounts.txt"));
+			while(scan.hasNext()) {
+				String currentUsername = code.decrypt(scan.nextLine());
+				String currentPassword = code.decrypt(scan.nextLine());
+				String currentEmail = code.decrypt(scan.nextLine());
+				
+				if(currentUsername.equals(username)) {
+					this.username = username;
+					password = currentPassword;
+					email = currentEmail;
+					found = true;
+					break;
+				}
+			}
+			scan.close();
+		}
+		catch(FileNotFoundException e) {
+			//e.printStackTrace();
+		}
+		
+		return found;
+	}
+	
+	/**
+	 * <pre> Looks to see if an Account exist on file. For a match to be found, username and password both
+	 * have to be equal to the username and password being read from file. Temporary Strings are used to hold the values 
+	 * when reading through file. The class fields will be set to these values if a match is found. 
+	 * This prevents the last username, password and email on file to be stored in class fields if a match was not found. </pre>
+	 * 
+	 * @oaram username - username to look for
+	 * @param password - password to look for
+	 * @return true if a match to username and password was found, false if not
+	 */
+	public boolean findAccount(String username, String password) {
+		  
+		boolean found = false;
+		
+		try {
+			code.setPassword("loginmanager");
+		}
+		catch(AlreadyInitializedException e) {
+			
+		}
+		
+		try {
+			Scanner scan = new Scanner(new File("accounts.txt"));
+			while(scan.hasNext()) {
+				String currentUsername = code.decrypt(scan.nextLine());
+				String currentPassword = code.decrypt(scan.nextLine());
+				String currentEmail = code.decrypt(scan.nextLine());
+				
+				if(currentUsername.equals(username) && currentPassword.equals(password)) {
+					this.username = username;
+					this.password = password;
+					email = currentEmail;
+					found = true;
+					break;
+				}
+			}
+			scan.close();
+		}
+		catch(FileNotFoundException e) {
+			//e.printStackTrace();
+		}
+		
+		return found;
+	}
+	
+
+	
+	/**
+	 * Verifies that the email matches the currently supported email domain. Currently only
+	 * supporting gmail addresses. 
+	 * 
+	 * @return true if email supported, false if not
+	 */
+	public boolean verifyEmail(String email) {
+		int atIndex = email.indexOf("@");
+		if(email.substring(atIndex + 1, email.length() - 4).equals("gmail"))
 			return true;
 		else
 			return false;
 	}
 	
 	/**
+	 * Sends an email to current this.email with forgotten password.
+	 * Should call findAccount or findUsername first to set class fields.
 	 * 
+	 * @throws NullPointerException - thrown if email or password contains null
 	 */
-	
-	public void sendEmail() {
+	public void sendEmail() throws NullPointerException{
+		
+		if(email == null || password == null)
+			throw new NullPointerException("email or password contains null");
 		
 		final String SENDER = "LoginManager3@gmail.com";
 		final String PASSWORD = "reganaMnigoL12";
@@ -215,8 +240,7 @@ public class Account {
           });
 
         try {
-
-            Message message = new MimeMessage(session);
+        	Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(SENDER));
             message.setRecipients(Message.RecipientType.TO,
                 InternetAddress.parse(email));
@@ -224,13 +248,9 @@ public class Account {
             message.setText("Your Login Manager password is " + password);
 
             Transport.send(message);
-
-            //System.out.println("Done");
-
-        } catch (MessagingException e) {
+        } 
+        catch (MessagingException e) {
             throw new RuntimeException(e);
         }
 	}
-		
-	
 }
