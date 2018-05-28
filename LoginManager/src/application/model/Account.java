@@ -1,14 +1,16 @@
 /**
- * @author Stephen Thompson
- * 
- * <pre> The Account class contains methods that allow information for application such as
+ * <pre> 
+ * The Account class contains methods that allow information for application such as
  * username, password and email to be stored on file in encrypted format.
  * Such methods include creating a new account, searching for an existing account or username.
  * Also a method for sending an email incase of forgotten password.
  *
  * The jasypt library has been imported for encryption purposes. Any information to be written to a file 
  * will be encrypted first with the BasicTextEncryptor class. Same class will be used for decrypting when 
- * reading from a file.</pre>
+ * reading from a file.
+ * </pre>
+ * 
+ * @author Stephen Thompson
  */
 
 package application.model;
@@ -69,14 +71,10 @@ public class Account {
 	 * a new Account. Should use findAccount method first to be sure no duplicate information is being added
 	 * </pre>
 	 * 
-	 * @param username
-	 *            - new username to be added
-	 * @param password
-	 *            - new password to be added
-	 * @param email
-	 *            - new email to be added
-	 * @throws NullPointerException
-	 *             - thrown if any of the parameters are null
+	 * @param username new username to be added
+	 * @param password new password to be added
+	 * @param email new email to be added
+	 * @throws NullPointerException thrown if any of the parameters are null
 	 */
 	public void createAccount(String username, String password, String email) throws NullPointerException {
 
@@ -157,9 +155,8 @@ public class Account {
 	 * This prevents the last username, password and email on file to be stored in class fields if a match was not found.
 	 * </pre>
 	 * 
-	 * @oaram username - username to look for
-	 * @param password
-	 *            - password to look for
+	 * @oaram username username to look for
+	 * @param password password to look for
 	 * @return true if a match to username and password was found, false if not
 	 */
 	public boolean findAccount(String username, String password) {
@@ -217,8 +214,7 @@ public class Account {
 	 * findAccount or findUsername first to set class fields.
 	 * </pre>
 	 * 
-	 * @throws NullPointerException
-	 *             - thrown if email or password contains null
+	 * @throws NullPointerException thrown if email or password contains null
 	 */
 	public void sendEmail() throws NullPointerException {
 

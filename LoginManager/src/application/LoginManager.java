@@ -1,7 +1,7 @@
 /**
- * @author Stephen Thompson
- *
- * Initial start of LoginManager application 
+ * Initial start of LoginManager application
+ * 
+ *  @author Stephen Thompson
  */
 
 package application;

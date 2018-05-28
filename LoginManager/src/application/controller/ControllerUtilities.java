@@ -1,9 +1,11 @@
 /**
- * @author Stephen Thompson
- * 
- * <pre> Controller Utilities class that contains methods and abstract methods
+ * <pre> 
+ * Controller Utilities class that contains methods and abstract methods
  * that are used by both controller classes for the LoginManager application.
- * Current derived classes include MainLoginController.java and MenuOptionController.java</pre>
+ * Current derived classes include MainLoginController.java and MenuOptionController.java
+ * </pre>
+ * 
+ * @author Stephen Thompson
  */
 
 package application.controller;
@@ -26,9 +28,8 @@ public abstract class ControllerUtilities {
 	 * application styles are set.
 	 * </pre>
 	 * 
-	 * @param textfield
-	 *            - can be a textfield or anything that derives from the textfield
-	 *            class such as passwordfield.
+	 * @param textfield can be a textfield or anything that derives from the
+	 *            textfield class such as passwordfield.
 	 * @return true if any textfields in the list contain empty input, false
 	 *         otherwise
 	 */
@@ -43,8 +44,7 @@ public abstract class ControllerUtilities {
 				emptyInput = true;
 			} else {
 				tf.getStyleClass().clear();
-				tf.getStyleClass().addAll("text-field", "text-input", "jfx-text-field", "password-field",
-						"jfx-password-field");
+				tf.getStyleClass().addAll("text-field", "text-input", "jfx-text-field", "password-field", "jfx-password-field");
 			}
 		}
 
@@ -53,8 +53,7 @@ public abstract class ControllerUtilities {
 
 	// constants used in setSnackbarStyle method below
 	final private String CSS_LOGIN_MANAGER = this.getClass().getResource("../view/LoginManager.css").toExternalForm();
-	final protected String CSS_GREEN_SNACKBAR = this.getClass().getResource("../view/GreenSnackbar.css")
-			.toExternalForm();
+	final protected String CSS_GREEN_SNACKBAR = this.getClass().getResource("../view/GreenSnackbar.css").toExternalForm();
 	final protected String CSS_RED_SNACKBAR = this.getClass().getResource("../view/RedSnackbar.css").toExternalForm();
 
 	/**
@@ -78,11 +77,9 @@ public abstract class ControllerUtilities {
 	 * snackbar style desired and adding to scene when wanted. ***
 	 * </pre>
 	 * 
-	 * @param style
-	 *            - represents which color font to use for toast message:
+	 * @param style represents which color font to use for toast message:
 	 *            CSS_GREEN_SNACKBAR or CSS_RED_SNACKBAR
-	 * @param node
-	 *            - is needed to get current Scene that is being used. Once scene
+	 * @param node - is needed to get current Scene that is being used. Once scene
 	 *            has been retrieved, a style can be added to it
 	 */
 	public void setSnackbarStyle(String style, Node node) {

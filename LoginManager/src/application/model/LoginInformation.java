@@ -1,14 +1,16 @@
 /**
- * @author Stephen Thompson
- * 
- * <pre> The LoginInformation class contains methods that allow information such as a
+ * <pre> 
+ * The LoginInformation class contains methods that allow information such as a
  * website, username and password to be stored on file in encrypted format.
  * Such methods allow adding, updating, or deleting information. To retrieve forgotten information,
  * getters for username and password are included.
  * 
  * The jasypt library has been imported for encryption purposes. Any information to be written to a file 
  * will be encrypted first with the BasicTextEncryptor class. Same class will be used for decrypting when 
- * reading from a file.</pre>
+ * reading from a file.
+ * </pre>
+ * 
+ * @author Stephen Thompson
  */
 
 package application.model;
@@ -34,8 +36,7 @@ public class LoginInformation {
 	 * look for this specific file to use.
 	 * </pre>
 	 * 
-	 * @param file
-	 *            - String value that represents which file to use
+	 * @param file String value that represents which file to use
 	 */
 	public LoginInformation(String file) {
 		fileName = file;
@@ -74,8 +75,7 @@ public class LoginInformation {
 	 * when reading through the file.
 	 * </pre>
 	 * 
-	 * @param site
-	 *            - website to look for
+	 * @param website website to look for
 	 * @return true if website found, false if not
 	 */
 	public boolean findWebsite(String website) {
@@ -117,12 +117,9 @@ public class LoginInformation {
 	 * Should call the findWebsite method first to be sure no duplicate information is being added.
 	 * </pre>
 	 * 
-	 * @param site
-	 *            - new website to be added
-	 * @param username
-	 *            - new username to be added
-	 * @param password
-	 *            - new password to be added
+	 * @param website new website to be added
+	 * @param username new username to be added
+	 * @param password new password to be added
 	 */
 	public void addNewLogin(String website, String username, String password) {
 
@@ -145,12 +142,9 @@ public class LoginInformation {
 	 * the website class field will have been initialized and then can be compared to websites on file.
 	 * </pre>
 	 * 
-	 * @param username
-	 *            - new username to be changed to if not empty
-	 * @param password
-	 *            - new password to be changed to if not empty
-	 * @throws NullPointerException
-	 *             - thrown if website has not been initialized
+	 * @param username new username to be changed to if not empty
+	 * @param password new password to be changed to if not empty
+	 * @throws NullPointerException thrown if website has not been initialized
 	 */
 	public void updateLogin(String username, String password) throws NullPointerException {
 
@@ -198,8 +192,7 @@ public class LoginInformation {
 	 * the website class field will have been initialized and then can be compared to websites on file.
 	 * </pre>
 	 * 
-	 * @throws NullPointerException
-	 *             - thrown if website has not been initialized
+	 * @throws NullPointerException thrown if website has not been initialized
 	 */
 	public void deleteLogin() throws NullPointerException {
 

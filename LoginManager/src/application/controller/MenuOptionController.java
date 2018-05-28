@@ -1,10 +1,12 @@
 /**
- * @author Stephen Thompson
- * 
- * <pre> Controller Class for MenuOption.fxml file locatied in application.view.
+ * <pre> 
+ * Controller Class for MenuOption.fxml file locatied in application.view.
  * Methods included mostly consist of listeners that act once a specific button is pushed.
  * LoginInformation object is used to call methods that handle the data entered and 
- * carry out the desired action.</pre>
+ * carry out the desired action.
+ * </pre>
+ * 
+ * @author Stephen Thompson
  */
 
 package application.controller;
@@ -139,8 +141,7 @@ public class MenuOptionController extends ControllerUtilities {
 	 * Method is called from MainLoginController, passing in which account is currently in use.
 	 * </pre>
 	 * 
-	 * @param account
-	 *            - is an Account object, username from object needed to pass into
+	 * @param account is an Account object, username from object needed to pass into
 	 *            LoginInformation constructor.
 	 */
 	public void init_Username(Account account) {
@@ -155,8 +156,7 @@ public class MenuOptionController extends ControllerUtilities {
 	 * This will minimize the program to the system tray.
 	 * </pre>
 	 * 
-	 * @param event
-	 *            - an ActionEvent object that was raised when either close or
+	 * @param event an ActionEvent object that was raised when either close or
 	 *            minimize button was pressed
 	 */
 	@FXML
@@ -356,10 +356,8 @@ public class MenuOptionController extends ControllerUtilities {
 	 * </pre>
 	 * 
 	 * @see application.controller.ControllerUtilities#switchScene(javafx.event.ActionEvent)
-	 * @param event
-	 *            - ActionEvent object raised from pressing signOutButton
-	 * @throws IOException
-	 *             - thrown if there is an issue with loading new fxml file
+	 * @param event ActionEvent object raised from pressing signOutButton
+	 * @throws IOException thrown if there is an issue with loading new fxml file
 	 */
 	@Override
 	public void switchScene(ActionEvent event) throws IOException {
@@ -395,8 +393,7 @@ public class MenuOptionController extends ControllerUtilities {
 	 * </pre>
 	 * 
 	 * @see application.controller.ControllerUtilities#switchPaneListener(javafx.event.ActionEvent)
-	 * @param event
-	 *            - ActionEvent object used to identify the source of which button
+	 * @param event ActionEvent object used to identify the source of which button
 	 *            was pressed.
 	 */
 	@Override

@@ -1,9 +1,11 @@
 /**
- * @author Stephen Thompson
- * 
- * <pre> Controller Class for MainLogin.fxml file located in application.view.
+ * <pre> 
+ * Controller Class for MainLogin.fxml file located in application.view.
  * Methods included mostly consist of listeners that act once a specific button is pushed.
- * Account object is used to call methods that handle the data entered and carry out the desired action.</pre>
+ * Account object is used to call methods that handle the data entered and carry out the desired action.
+ * </pre>
+ * 
+ * @author Stephen Thompson
  */
 
 package application.controller;
@@ -122,8 +124,7 @@ public class MainLoginController extends ControllerUtilities {
 	 * This will minimize the program to the system tray.
 	 * </pre>
 	 * 
-	 * @param event
-	 *            - an ActionEvent object that was raised when either close or
+	 * @param event an ActionEvent object that was raised when either close or
 	 *            minimize button was pressed
 	 */
 	public void titleButtonListener(ActionEvent event) {
@@ -144,11 +145,9 @@ public class MainLoginController extends ControllerUtilities {
 	 * and if found, switch scenes. If not found a toast message will show that the sign in attempt failed.
 	 * </pre>
 	 * 
-	 * @param event
-	 *            - an ActionEvent object that was raised by signInButton, this
+	 * @param event an ActionEvent object that was raised by signInButton, this
 	 *            event is passed to switchScene method
-	 * @throws IOException
-	 *             - possible exception thrown from switchScene call
+	 * @throws IOException possible exception thrown from switchScene call
 	 */
 	@FXML
 	public void signInListener(ActionEvent event) throws IOException {
@@ -180,11 +179,9 @@ public class MainLoginController extends ControllerUtilities {
 	 * Once this has finished, switchScene will be called.
 	 * </pre>
 	 * 
-	 * @param event
-	 *            - an ActionEvent object that was raised by signUpButton, this
+	 * @param event an ActionEvent object that was raised by signUpButton, this
 	 *            event is passed to switchScene method
-	 * @throws IOException
-	 *             - possible exception thrown from switchScene call
+	 * @throws IOException possible exception thrown from switchScene call
 	 */
 	@FXML
 	public void signUpListener(ActionEvent event) throws IOException {
@@ -260,11 +257,9 @@ public class MainLoginController extends ControllerUtilities {
 	 * </pre>
 	 * 
 	 * @see application.controller.ControllerUtilities#switchScene(javafx.event.ActionEvent)
-	 * @param event
-	 *            - ActionEvent object that was passed from either signIn or signUp
+	 * @param event ActionEvent object that was passed from either signIn or signUp
 	 *            Listener
-	 * @throws IOException
-	 *             - thrown if there is an issue with loading new fxml file
+	 * @throws IOException thrown if there is an issue with loading new fxml file
 	 */
 	@Override
 	public void switchScene(ActionEvent event) throws IOException {
@@ -306,8 +301,7 @@ public class MainLoginController extends ControllerUtilities {
 	 * </pre>
 	 * 
 	 * @see application.controller.ControllerUtilities#switchPaneListener(javafx.event.ActionEvent)
-	 * @param event
-	 *            - ActionEvent object used to identify the source of which button
+	 * @param event ActionEvent object used to identify the source of which button
 	 *            was pressed.
 	 */
 	@Override
