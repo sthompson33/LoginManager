@@ -222,7 +222,7 @@ public class Account {
 			throw new NullPointerException("email or password contains null");
 
 		final String SENDER = "LoginManager3@gmail.com";
-		final String PASSWORD = "reganaMnigoL12";
+		final String PASSWORD = "password goes here";
 
 		Properties props = new Properties();
 		props.put("mail.smtp.starttls.enable", "true");
