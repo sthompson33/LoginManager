@@ -61,17 +61,11 @@ public abstract class ControllerUtilities {
 	 * Sets the style of the snackbar toast message that pops up after certain events.
 	 * When called, stylesheets are first cleared from the scene to remove any previously added styles.
 	 * The main css file is then added along with the new style for the snackbar message.
-	 * </pre>
-	 * <p>
 	 * 
-	 * <pre>
 	 * Current styles available are..
 	 * CSS_GREEN_SNACKBAR sets the style of the message to green indicating a successful attempt.
 	 * CSS_RED_SNACKBAR sets the style of the message to red indicating that an error has occured.
-	 * </pre>
-	 * <p>
 	 * 
-	 * <pre>
 	 * *** At the time this class was written, there were issues with adding styles to the 
 	 * snackbar using the main css file. Current solution was to create a file for each
 	 * snackbar style desired and adding to scene when wanted. ***
@@ -79,8 +73,8 @@ public abstract class ControllerUtilities {
 	 * 
 	 * @param style represents which color font to use for toast message:
 	 *            CSS_GREEN_SNACKBAR or CSS_RED_SNACKBAR
-	 * @param node - is needed to get current Scene that is being used. Once scene
-	 *            has been retrieved, a style can be added to it
+	 * @param node is needed to get current Scene that is being used. Once scene has
+	 *            been retrieved, a style can be added to it
 	 */
 	public void setSnackbarStyle(String style, Node node) {
 		Scene scene = node.getScene();
