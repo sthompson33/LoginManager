@@ -3,7 +3,9 @@
 <p>A JavaFx application that uses the MVC architecture to store login information for websites to a file in encrypted format. After signing up, information entered will be written to the accounts file. A file will be created for each new account created to store login information. Jasypt library used to handle the encryption and decryption purposes when writing to or reading from all files.</p>
 
 <h2>Main Login Scene</h2>
-<p>The user has the option to Sign In to a previously created account or choose the Sign Up option to start a new one. Forgot Password button allows the user to enter their username in which the program will check the accounts file, if a match is found then the program will send the forgotten password to the email address the user entered when signing up.</p>
+<p>The user has the option to Sign In to a previously created account or choose the Sign Up option to start a new one. Forgot Password* button allows the user to enter their username in which the program will check the accounts file, if a match is found then the program will send the forgotten password to the email address the user entered when signing up. </p>
+<p>* To use the Forgotten Password feature, you need to create an email account for the program to use (only Gmail currently supported) and assign it to SENDER under sendEmail() in the Accounts class. Password for the email account will need to be assigned to PASSWORD.
+</p>
 <img src = "readme_images/mainLogin.png">
 <p>If any textfields are left blank, a red style will be applied to show that the missing information is required. If any information entered is incorrect, such as wrong username or password when trying to Sign In, a red toast message will appear from the bottom displaying the error.</p>
 <img src = "readme_images/signUpError.png">
